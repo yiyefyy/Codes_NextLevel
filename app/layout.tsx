@@ -3,6 +3,8 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
+import { Col } from '@tremor/react';
+import Sidebar from './sidebar';
 
 export const metadata = {
   title: 'Next.js 13 + PlanetScale + NextAuth + Tailwind CSS',
@@ -16,12 +18,19 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full bg-gray-50">
+    <html lang="en" className="h-full bg-gray-50 overflow-hidden">
       <body className="h-full">
-        <Suspense>
-          <Nav />
-        </Suspense>
-        {children}
+        <div className="sticky top-0 z-50">
+          <Suspense>
+            <Nav />
+          </Suspense>
+        </div>
+        <div className="flex h-full">
+          <div className="overflow-hidden">
+            <Sidebar />
+          </div>
+          <div className="flex-1 overflow-y-auto">{children}</div>
+        </div>
         <Analytics />
       </body>
     </html>
