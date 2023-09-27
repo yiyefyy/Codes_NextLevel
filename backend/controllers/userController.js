@@ -4,9 +4,9 @@ const { Op } = require('sequelize');
 
 const addUser = async (req, res, next) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, name } = req.body;
     
-        if (!username || !email || !password) {
+        if (!username || !email || !password || !name) {
             res.status(400).json({error: "Missing field"});
             return;
         }
@@ -28,6 +28,7 @@ const addUser = async (req, res, next) => {
         const hash = await bcrypt.hash(password, 10);
     
         const user = await Users.create({
+            name: name,
             username: username,
             email: email,
             password: hash
