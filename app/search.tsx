@@ -63,7 +63,7 @@ export default function Search({ disabled }: { disabled?: boolean }) {
               cy="12"
               r="10"
               stroke="currentColor"
-              strokeWidth="4"
+              stroke-width="4"
             />
             <path
               className="opacity-75"
