@@ -7,13 +7,7 @@ import {
   TableCell,
   Text
 } from '@tremor/react';
-
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-}
+import { User } from '../pages/api/users/userApi';
 
 export default function UsersTable({ users }: { users: User[] }) {
   return (
@@ -27,10 +21,10 @@ export default function UsersTable({ users }: { users: User[] }) {
       </TableHead>
       <TableBody>
         {users.map((user) => (
-          <TableRow key={user.id}>
-            <TableCell>{user.name}</TableCell>
+          <TableRow key={user.userId}>
+            <TableCell>{user.username}</TableCell>
             <TableCell>
-              <Text>{user.username}</Text>
+              <Text>{user.name}</Text>
             </TableCell>
             <TableCell>
               <Text>{user.email}</Text>
