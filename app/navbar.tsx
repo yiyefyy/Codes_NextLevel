@@ -28,26 +28,22 @@ export default function Navbar({ user }: { user: any }) {
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center">
                   <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    className="text-gray-100"
                     xmlns="http://www.w3.org/2000/svg"
+                    width="60"
+                    height="50"
+                    viewBox="0 0 73 59"
+                    fill="none"
                   >
-                    <rect
-                      width="100%"
-                      height="100%"
-                      rx="16"
-                      fill="currentColor"
+                    <path
+                      d="M56.2727 0L50 6.1875L60.4545 16.5L50 26.8125L56.2727 33L73 16.5L56.2727 0Z"
+                      fill="#2B3D62"
                     />
                     <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-                      fill="black"
+                      d="M43.7143 0V59H51V0H43.7143ZM29.1429 7.375V59H36.4286V7.375H29.1429ZM14.5714 22.125V59H21.8571V22.125H14.5714ZM0 36.875V59H7.28571V36.875H0Z"
+                      fill="#2B3D62"
                     />
                   </svg>
+                  <div className="px-4 font-medium">Next Level</div>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) => (
