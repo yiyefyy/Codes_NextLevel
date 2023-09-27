@@ -29,7 +29,7 @@ export default function Navbar({ user }: { user: any }) {
                 <div className="flex flex-shrink-0 items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="60"
+                    width="50"
                     height="50"
                     viewBox="0 0 73 59"
                     fill="none"
