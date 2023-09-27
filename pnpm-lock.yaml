@@ -2129,8 +2129,8 @@ packages:
       '@babel/runtime': 7.23.1
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
-      jose: 4.14.4
-      next: 13.5.3(react-dom@18.2.0)(react@18.2.0)
+      jose: 4.14.6
+      next: 13.4.19(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.5.0
       preact: 10.17.1
