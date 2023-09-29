@@ -1,4 +1,4 @@
-import React, { CSSProperties, ReactNode } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import CustomButton from './custom-button';
 
 interface CustomCardProps {
@@ -18,14 +18,44 @@ function CustomCard({
   buttonDisabled = false,
   style = {}
 }: CustomCardProps) {
+  const [cardStatus, setCardStatus] = useState(status);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
   const statusClass =
-    status === 'Registered'
+    cardStatus === 'Registered'
       ? 'text-blue-500'
-      : status === 'Open'
+      : cardStatus === 'Open'
       ? 'text-green-500'
-      : status === 'Cancelled'
+      : cardStatus === 'Cancelled'
       ? 'text-gray-500'
       : '';
+
+  const handleSignUp = () => {
+    setShowSignUpModal(true);
+  };
+
+  const handleConfirmSignUp = () => {
+    setCardStatus('Registered');
+    setShowSignUpModal(false);
+  };
+
+  const handleCancelSignUp = () => {
+    setShowSignUpModal(false);
+  };
+
+  const handleCancel = () => {
+    setShowCancelModal(true);
+  };
+
+  const handleConfirmCancel = () => {
+    setCardStatus('Open');
+    setShowCancelModal(false);
+  };
+
+  const handleCancelCancellation = () => {
+    setShowCancelModal(false);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4" style={style}>
@@ -33,16 +63,58 @@ function CustomCard({
       <p className="text-gray-600 mt-2">{description}</p>
       <p className="text-sm text-gray-500 mt-2">{date}</p>
       <div className="mt-2 flex justify-between items-center">
-        <p className={statusClass}>{status}</p>
+        <p className={statusClass}>{cardStatus}</p>
         <p className="text-right">
-          {status === 'Registered' ? (
-            <CustomButton secondary disabled={buttonDisabled}>
-              Cancel
-            </CustomButton>
-          ) : status !== 'Cancelled' ? (
-            <CustomButton primary disabled={buttonDisabled}>
-              Sign Up
-            </CustomButton>
+          {cardStatus === 'Registered' ? (
+            <>
+              <CustomButton secondary onClick={handleCancel}>
+                Cancel
+              </CustomButton>
+              {showCancelModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white p-4 rounded shadow-md">
+                    <p>Confirm Cancellation?</p>
+                    <div className="flex justify-end mt-4">
+                      <CustomButton onClick={handleConfirmCancel}>
+                        Confirm
+                      </CustomButton>
+                      <CustomButton onClick={handleCancelCancellation}>
+                        Cancel
+                      </CustomButton>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : cardStatus !== 'Cancelled' ? (
+            <>
+              <CustomButton
+                primary
+                disabled={buttonDisabled}
+                onClick={handleSignUp}
+              >
+                Sign Up
+              </CustomButton>
+              {showSignUpModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white p-4 rounded shadow-md">
+                    <div className="flex flex-col items-center">
+                      {' '}
+                      <p>Confirm Sign Up?</p>
+                      <div className="flex justify-between mt-4 w-full">
+                        {' '}
+                        <CustomButton onClick={handleConfirmSignUp}>
+                          Confirm
+                        </CustomButton>
+                        <CustomButton onClick={handleCancelSignUp}>
+                          Cancel
+                        </CustomButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
           ) : null}
         </p>
       </div>
