@@ -3,7 +3,6 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
-import { Col } from '@tremor/react';
 import Sidebar from './sidebar';
 
 export const metadata = {
