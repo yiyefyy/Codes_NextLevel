@@ -20,7 +20,7 @@ export default function RegisterForm() {
     email: "",
     department: "",
     designation: "",
-    password: "",
+    password: "password123",
     isAdmin: "false"
   });
 
