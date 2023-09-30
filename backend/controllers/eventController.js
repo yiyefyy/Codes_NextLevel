@@ -3,7 +3,7 @@ const { Op, INTEGER } = require('sequelize');
 
 const addEvent = async (req, res, next) => {
     try {
-        const { eventId, eventName, eventType, description, date, capacity, signUps, status } = req.body;
+        const { eventId, eventName, eventType, description, date, capacity, signUps, status, image } = req.body;
 
         if (!eventId, !eventName || !eventType || !description || !date || !capacity || signUps == null || !status) {
             res.status(400).json({ error: "Missing field" });
@@ -31,7 +31,8 @@ const addEvent = async (req, res, next) => {
             date: date,
             capacity: capacity,
             signUps: signUps,
-            status: status
+            status: status,   
+            image: image
         });
 
         res.status(201).json({ res: event });
@@ -120,7 +121,7 @@ const signupForEvent = async (req, res, next) => {
         }
 
         event.increment('signUps');
-        
+
         if (event.signUps == event.capacity) {
             event.status = 'closed';
             await event.save();
@@ -143,7 +144,7 @@ const updateEvent = async (req, res, next) => {
             return;
         }
 
-        const { eventName, eventType, description, date, capacity } = req.body;
+        const { eventName, eventType, description, date, capacity, image } = req.body;
 
         if (eventName && typeof eventName == 'string') {
             event.eventName = eventName;
@@ -163,6 +164,10 @@ const updateEvent = async (req, res, next) => {
 
         if (capacity && typeof capacity == "number") {
             event.capacity = capacity;
+        }
+
+        if (image && typeof image == 'string') {
+            event.image = image;
         }
 
         await event.save()

@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         status: {   // open, closed, cancelled
             type: DataTypes.STRING,
             allowNull: false,
+        },
+        image: {
+            type: DataTypes.STRING,
+            allowNULL: true
         }
     })
 
