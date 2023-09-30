@@ -4,7 +4,7 @@ import { useState } from "react";
 import LoadingDots from "./loading-dots";
 import toast, {Toaster} from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createUser, User } from "../../pages/api/users/userApi";
+import { createUser, User } from "../../pages/api/userApi";
 import CheckIcon from '@mui/icons-material/Check';
 import ToggleButton from '@mui/material/ToggleButton';
 import Link from "next/link";

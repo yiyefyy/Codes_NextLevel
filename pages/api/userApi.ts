@@ -1,4 +1,4 @@
-import { fetchData } from "../utils";
+import { fetchData } from "./utils";
 const USERS_API = 'http://localhost:8000/users'
 
 export interface User {
