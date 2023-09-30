@@ -1,5 +1,4 @@
 import { Title } from '@tremor/react'
-import { Main } from 'next/document'
 import Link from 'next/link'
 import React from 'react'
 
