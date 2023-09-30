@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { createUser, User } from "../../pages/api/users/userApi";
 import CheckIcon from '@mui/icons-material/Check';
 import ToggleButton from '@mui/material/ToggleButton';
+import Link from "next/link";
 
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
@@ -210,6 +211,12 @@ export default function RegisterForm() {
           <p>Add Employee</p>
         )}
       </button>
+      <p className="text-center text-sm text-gray-600">
+        Not an Admin?
+        <Link href="/login" className="font-semibold text-gray-800">
+         {" "}Login instead
+        </Link>
+      </p>
     </form>
     </>
   );

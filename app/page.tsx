@@ -4,6 +4,7 @@ import Search from './search';
 import UsersTable from './table';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +21,6 @@ export default async function IndexPage({
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      {/* <Title>Users</Title> */}
       <Title>Welcome, {session?.user.firstName}</Title>
       {session?.user ? (
         session?.user.isAdmin ? (   // LOGGED IN AS ADMIN
@@ -39,7 +39,10 @@ export default async function IndexPage({
         </Text>
         )) : (   // NOT LOGGED IN
         <Text>
-          Please sign in.
+          Please
+          <Link href="/login" className="font-semibold text-gray-800">
+          {" "}sign in
+          </Link>
         </Text>
       )}
 
