@@ -23,7 +23,7 @@ export default function LoginForm() {
       toast.error(data.error)
     } else {
       router.refresh();
-      router.push("/"); 
+      router.push("/employee/dashboard")
     }
   }
 

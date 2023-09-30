@@ -7,9 +7,9 @@ import Sidebar from './sidebar';
 import { EventProvider } from './data/EventProvider';
 
 export const metadata = {
-  title: 'Next.js 13 + PlanetScale + NextAuth + Tailwind CSS',
+  title: 'Next Level - PSA',
   description:
-    'A user admin dashboard configured with Next.js, PlanetScale, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.'
+    '(Some description).'
 };
 
 export default async function RootLayout({
