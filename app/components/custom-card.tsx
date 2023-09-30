@@ -8,6 +8,7 @@ interface CustomCardProps {
   status: string;
   buttonDisabled?: boolean;
   style?: CSSProperties;
+  onCancel?: () => void;
 }
 
 function CustomCard({
@@ -15,9 +16,12 @@ function CustomCard({
   description,
   date,
   status,
-  buttonDisabled = false,
-  style = {}
+  buttonDisabled,
+  style = {},
+  onCancel
 }: CustomCardProps) {
+  const currentDate = new Date();
+  const cardDate = new Date(date);
   const [cardStatus, setCardStatus] = useState(status);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -51,6 +55,9 @@ function CustomCard({
   const handleConfirmCancel = () => {
     setCardStatus('Open');
     setShowCancelModal(false);
+    if (onCancel) {
+      onCancel();
+    }
   };
 
   const handleCancelCancellation = () => {
@@ -65,9 +72,13 @@ function CustomCard({
       <div className="mt-2 flex justify-between items-center">
         <p className={statusClass}>{cardStatus}</p>
         <p className="text-right">
-          {cardStatus === 'Registered' ? (
+          {cardStatus === 'Registered' && cardDate > currentDate ? (
             <>
-              <CustomButton secondary onClick={handleCancel}>
+              <CustomButton
+                secondary
+                onClick={handleCancel}
+                disabled={buttonDisabled}
+              >
                 Cancel
               </CustomButton>
               {showCancelModal && (
@@ -86,13 +97,9 @@ function CustomCard({
                 </div>
               )}
             </>
-          ) : cardStatus !== 'Cancelled' ? (
+          ) : cardStatus === 'Open' ? (
             <>
-              <CustomButton
-                primary
-                disabled={buttonDisabled}
-                onClick={handleSignUp}
-              >
+              <CustomButton primary onClick={handleSignUp}>
                 Sign Up
               </CustomButton>
               {showSignUpModal && (
@@ -114,6 +121,10 @@ function CustomCard({
                   </div>
                 </div>
               )}
+            </>
+          ) : cardStatus === 'Registered' && cardDate < currentDate ? (
+            <>
+              <CustomButton primary>Leave Feedback</CustomButton>
             </>
           ) : null}
         </p>

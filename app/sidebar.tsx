@@ -5,7 +5,8 @@ import { Disclosure } from '@headlessui/react';
 
 const navigation = [
   { name: 'Dashboard', href: '/employee/dashboard' },
-  { name: 'Playground', href: '/playground' }
+  // { name: 'Playground', href: '/playground' },
+  { name: 'My Schedule', href: '/employee/my-schedule' }
 ];
 
 function classNames(...classes: string[]) {
