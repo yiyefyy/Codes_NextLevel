@@ -1,4 +1,4 @@
-const { Users, RegisteredEvents } = require('../models');
+const { Users, RegisteredEvents, Events } = require('../models');
 
 const getRegisteredEventsByUserId = async (req, res, next) => {
     try {
@@ -14,7 +14,11 @@ const getRegisteredEventsByUserId = async (req, res, next) => {
             where: {userId}
         });
 
-        res.status(200).json({ res: registeredEventList})
+        const eventIds = registeredEventList.map((registeredEvent) => registeredEvent.eventId);
+        const eventList = await Events.findAll({
+            where: { eventId: eventIds }, 
+        });
+        res.status(200).json({ res: eventList})
 
     } catch (err) {
         next(err)

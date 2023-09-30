@@ -1,5 +1,5 @@
 const { Users, Events, RegisteredEvents } = require('../models');
-const { Op, INTEGER } = require('sequelize');
+const { Op } = require('sequelize');
 
 const addEvent = async (req, res, next) => {
     try {
@@ -177,6 +177,24 @@ const updateEvent = async (req, res, next) => {
     }
 }
 
+const deleteEvent = async (req, res, next) => {
+    try {
+        const id = req.params.eventId;
+        const event = await Events.findByPk(id);
+
+        if (!event) {
+            res.status(404).json({ error: "Event does not exist!" });
+            return;
+        }
+
+        await Events.destroy({where: {eventId: id}})
+        res.sendStatus(204)
+
+    } catch (err) {
+        next(err)
+    }
+}
+
 
 module.exports = {
     addEvent,
@@ -184,5 +202,6 @@ module.exports = {
     getEventById,
     signupForEvent,
     updateEventStatus,
-    updateEvent
+    updateEvent,
+    deleteEvent
 }
