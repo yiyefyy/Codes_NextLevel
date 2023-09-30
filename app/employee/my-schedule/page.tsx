@@ -1,90 +1,22 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import CustomCard from '../../components/custom-card';
+import { eventData } from '../../data/EventData';
+import { useEventContext } from '../../data/EventProvider';
+interface EventType {
+  id: number;
+  title: string;
+  type: string;
+  description: string;
+  date: string;
+  status: string;
+  image?: string;
+}
 
 export default function SchedulePage() {
-  const [eventCards, setEventCards] = useState([
-    {
-      id: 97,
-      title: 'AI Design Course',
-      type: 'Workshop',
-      description:
-        'Earn a digital certificate from MIT xPRO and enhance your AI knowledge',
-      date: '1 Oct 2023',
-      status: 'Open',
-      image:
-        'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE='
-    },
-    {
-      id: 98,
-      title: 'Workshop',
-      type: 'Workshop',
-      description: 'Workshop Workshop',
-      date: '1 Oct 2023',
-      status: 'Open'
-    },
-    {
-      id: 99,
-      title: 'Workshop',
-      type: 'Workshop',
-      description: 'Workshop Workshop',
-      date: '1 Oct 2023',
-      status: 'Open'
-    },
-    {
-      id: 100,
-      title: 'Workshop',
-      type: 'Workshop',
-      description: 'Workshop Workshop',
-      date: '1 Oct 2023',
-      status: 'Cancelled'
-    },
-    {
-      id: 101,
-      title: 'Workshop on Smart and Circular Cities',
-      type: 'Workshop',
-      description:
-        'Organized in the scope of the 8th IEEE International Smart Cities Conference',
-      date: '1 Oct 2023',
-      status: 'Registered',
-      image:
-        'https://images.ctfassets.net/3dar4x4x74wk/6eytQAc9gwE7u80yQu0sNZ/3f6bd009f0342b07357b0a6ed339855a/ME_Careers-Site_Home_Header_1536x800.jpg'
-    },
-    {
-      id: 102,
-      title: 'Workshop',
-      type: 'Workshop',
-      description: 'Workshop Workshop',
-      date: '1 Oct 2023',
-      status: 'Open'
-    },
-    {
-      id: 103,
-      title: 'Pilates',
-      type: 'Activity',
-      description: 'Activity Activity',
-      date: '2 Oct 2023',
-      status: 'Open',
-      image:
-        'https://bestinsingapore.com/wp-content/uploads/2020/08/reformer-pilates-1569423354-1024x515.jpg'
-    },
-    {
-      id: 104,
-      title: 'Activity',
-      type: 'Activity',
-      description: 'Activity Activity',
-      date: '1 Sep 2023',
-      status: 'Registered'
-    },
-    {
-      id: 105,
-      title: 'Activity',
-      type: 'Activity',
-      description: 'Activity Activity',
-      date: '2 Oct 2023',
-      status: 'Cancelled'
-    }
-  ]);
+  const { eventData, addEventToUpcoming } = useEventContext();
+
+  const [eventCards, setEventCards] = useState(eventData);
 
   const [currentTab, setCurrentTab] = useState('Upcoming');
 
@@ -92,17 +24,17 @@ export default function SchedulePage() {
 
   const filteredCards =
     currentTab === 'Upcoming'
-      ? eventCards.filter((card) => {
+      ? eventCards.filter((card: EventType) => {
           const cardDate = new Date(card.date);
           return card.status === 'Registered' && cardDate > currentDate;
         })
-      : eventCards.filter((card) => {
+      : eventCards.filter((card: EventType) => {
           const cardDate = new Date(card.date);
           return card.status === 'Registered' && cardDate < currentDate;
         });
 
   const handleCardCancellation = (cardId: number) => {
-    const updatedEventCards = eventCards.map((card) => {
+    const updatedEventCards = eventCards.map((card: EventType) => {
       if (card.id === cardId) {
         return { ...card, status: 'Cancelled' };
       }
@@ -137,18 +69,28 @@ export default function SchedulePage() {
         </button>
       </div>
 
-      {filteredCards.map((card, index) => (
-        <div id={`card-${card.id}`} key={index}>
-          <CustomCard
-            title={card.title}
-            description={card.description}
-            date={card.date}
-            status={card.status}
-            onCancel={() => handleCardCancellation(card.id)}
-            style={{ marginBottom: '16px' }}
-          />
-        </div>
-      ))}
+      {filteredCards.length === 0 && currentTab === 'Upcoming' ? (
+        <p className="ml-4 text-gray-500 text-l">
+          You have no upcoming events or activities.
+        </p>
+      ) : filteredCards.length === 0 && currentTab === 'History' ? (
+        <p className="ml-4 text-gray-500 text-l">
+          You have no history of events or activites.
+        </p>
+      ) : (
+        filteredCards.map((card: EventType, index: number) => (
+          <div id={`card-${card.id}`} key={index}>
+            <CustomCard
+              title={card.title}
+              description={card.description}
+              date={card.date}
+              status={card.status}
+              onCancel={() => handleCardCancellation(card.id)}
+              style={{ marginBottom: '16px' }}
+            />
+          </div>
+        ))
+      )}
     </main>
   );
 }

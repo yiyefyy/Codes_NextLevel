@@ -3,6 +3,8 @@ import { Card, Title, Text } from '@tremor/react';
 import Search from './search';
 // import UsersTable from './table';
 
+import { EventProvider } from './data/EventProvider';
+
 export const dynamic = 'force-dynamic';
 
 export default async function IndexPage({

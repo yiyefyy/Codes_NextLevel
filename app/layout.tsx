@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
 import Sidebar from './sidebar';
+import { EventProvider } from './data/EventProvider';
 
 export const metadata = {
   title: 'Next.js 13 + PlanetScale + NextAuth + Tailwind CSS',
@@ -28,7 +29,10 @@ export default async function RootLayout({
           <div className="overflow-hidden">
             <Sidebar />
           </div>
-          <div className="flex-1 overflow-y-auto">{children}</div>
+          <div className="flex-1 overflow-y-auto">
+            {' '}
+            <EventProvider>{children}</EventProvider>
+          </div>
         </div>
         <Analytics />
       </body>

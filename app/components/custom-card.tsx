@@ -8,6 +8,7 @@ interface CustomCardProps {
   status: string;
   buttonDisabled?: boolean;
   style?: CSSProperties;
+  onSignup?: () => void;
   onCancel?: () => void;
 }
 
@@ -18,6 +19,7 @@ function CustomCard({
   status,
   buttonDisabled,
   style = {},
+  onSignup,
   onCancel
 }: CustomCardProps) {
   const currentDate = new Date();
@@ -37,11 +39,17 @@ function CustomCard({
 
   const handleSignUp = () => {
     setShowSignUpModal(true);
+    if (onSignup) {
+      onSignup();
+    }
   };
 
   const handleConfirmSignUp = () => {
     setCardStatus('Registered');
     setShowSignUpModal(false);
+    if (onSignup) {
+      onSignup();
+    }
   };
 
   const handleCancelSignUp = () => {
