@@ -34,7 +34,7 @@ export async function fetchAllEvents(): Promise<Event[]> {
   return fetchData(EVENTS_API);
 }
 
-export async function fetchUser(eventId: string): Promise<Event> {
+export async function fetchEvent(eventId: string): Promise<Event> {
   const fetchEventApi = `${EVENTS_API}/${eventId}`
   return fetchData(fetchEventApi)
 }

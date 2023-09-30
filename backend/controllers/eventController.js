@@ -112,6 +112,7 @@ const signupForEvent = async (req, res, next) => {
         await RegisteredEvents.create({
             userId: userId,
             eventId: eventId,
+            status: "registered"
         });
 
         if (event.signUps == event.capacity) {
