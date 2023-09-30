@@ -1,23 +1,23 @@
 {
   "development": {
     "username": "root",
-    "password": "nextlevel",
+    "password": null,
     "database": "Users",
-    "host": "34.87.55.244",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "nextlevel",
+    "password": null,
     "database": "Users",
-    "host": "34.87.55.244",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "nextlevel",
+    "password": null,
     "database": "Users",
-    "host": "34.87.55.244",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }

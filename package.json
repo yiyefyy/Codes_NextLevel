@@ -8,8 +8,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@mui/icons-material": "^5.14.11",
+    "@mui/material": "^5.14.11",
     "@planetscale/database": "^1.11.0",
     "@tremor/react": "^3.6.6",
     "@types/js-cookie": "^3.0.3",

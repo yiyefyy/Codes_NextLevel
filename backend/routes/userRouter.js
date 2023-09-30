@@ -11,7 +11,8 @@ userRouter.get("/", userController.getAllUsers)
 
 userRouter.get("/:userId", userController.getUserById)
 
-userRouter.put("/:userId", userController.updateUser);
+// dont need to update user profile?
+// userRouter.put("/:userId", userController.updateUser);
 
 userRouter.delete("/:userId", userController.deleteUser);
 

@@ -4,9 +4,9 @@ const { Op } = require('sequelize');
 
 const addUser = async (req, res, next) => {
     try {
-        const { username, email, password, name } = req.body;
+        const {userId, firstName, lastName, email, department, designation, password, isAdmin } = req.body;
     
-        if (!username || !email || !password || !name) {
+        if ( !userId, !firstName || !lastName || !email || !department || !designation || !password || !isAdmin) {
             res.status(400).json({error: "Missing field"});
             return;
         }
@@ -15,11 +15,11 @@ const addUser = async (req, res, next) => {
             where: {
               [Op.or]: [
                 { email: email },
-                { username: username },
+                { userId: userId },
               ],
             },
           });
-
+          
         if (count !== 0) {
             res.status(400).json({ error: "User already exists"});
             return;
@@ -28,10 +28,14 @@ const addUser = async (req, res, next) => {
         const hash = await bcrypt.hash(password, 10);
     
         const user = await Users.create({
-            name: name,
-            username: username,
+            userId: userId,
+            firstName: firstName,
+            lastName: lastName,
             email: email,
-            password: hash
+            department: department,
+            designation: designation,
+            password: hash,
+            isAdmin: isAdmin
         });
     
         res.status(201).json({ res: user});
@@ -43,14 +47,14 @@ const addUser = async (req, res, next) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!username || !password) {
+        if (!email || !password) {
             res.status(400).json({error: "Missing field"});
             return;
         }
 
-        const user = await Users.findOne({ where: { username: username } });
+        const user = await Users.findOne({ where: { email: email } });
     
         if (!user) {
             res.status(404).json({error: "User does not exist"});
@@ -94,45 +98,6 @@ const getUserById = async (req, res, next) => {
     }
 }
 
-const updateUser = async (req, res, next) => {
-    try {
-        const id = req.params.userId
-        const user = await Users.findByPk(id);
-        if (!user) {
-            res.status(404).json({error: "User does not exist"});
-            return;
-        }
-
-        const { username, password, name } = req.body;
-
-        // TODO: make this nicer?
-        if (username && typeof username == 'string') {
-            const existingUser = await Users.findOne({ where: { username: username }});
-    
-            if (existingUser && existingUser.userId != id) {
-                res.status(400).json({ error: "Username already taken"});
-                return;
-            }
-            user.username = username;
-        }
-
-        if (password && typeof password == 'string') {
-            const hash = await bcrypt.hash(password, 10);
-            user.password = hash;
-        }
-
-        if (name && typeof name == 'string') {
-            user.name = name;
-        }
-
-        await user.save();
-        res.status(200).json({res: user});
-    } catch (err) {
-        next(err);
-    }
-
-}
-
 const deleteUser = async (req, res, next) => {
     try {
         const id = req.params.userId;
@@ -154,6 +119,5 @@ module.exports = {
     loginUser,
     getAllUsers,
     getUserById,
-    updateUser,
     deleteUser
 }

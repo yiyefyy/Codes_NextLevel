@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Form from "../components/form";
+import RegisterForm from "../components/registerForm";
 import Link from "next/link";
 
-export default function Login() {
+export default function Register() {
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
@@ -17,12 +17,9 @@ export default function Login() {
               height={20}
             />
           </Link>
-          <h3 className="text-xl font-semibold">Sign Up</h3>
-          <p className="text-sm text-gray-500">
-            Create an account with your email and password
-          </p>
+          <h3 className="text-xl font-semibold">Add Employee</h3>
         </div>
-        <Form type="register" />
+        <RegisterForm/>
       </div>
     </div>
   );
