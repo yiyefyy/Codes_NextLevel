@@ -47,14 +47,14 @@ const addUser = async (req, res, next) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { userId, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!userId || !password) {
+        if (!email || !password) {
             res.status(400).json({error: "Missing field"});
             return;
         }
 
-        const user = await Users.findOne({ where: { userId: userId } });
+        const user = await Users.findOne({ where: { email: email } });
     
         if (!user) {
             res.status(404).json({error: "User does not exist"});

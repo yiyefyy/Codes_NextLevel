@@ -1,20 +1,17 @@
+import { fetchData } from "../utils";
 
 const USERS_API = 'http://localhost:8000/users'
 
 export interface User {
     userId: number;
+    firstName: string;
+    lastName: string;
     email: string;
-    username: string;
+    department: string;
+    designation: string;
     password: string;
-    name: string;
+    isAdmin: string;
   }
-
-async function fetchData(api: string, requestOptions = {}): Promise<any> {
-  const response = await fetch(api, requestOptions)
-  const results = await response.json()
-  if (!response.ok) throw new Error(results.error)
-  return results.res
-}
 
 export async function createUser(user: User): Promise<User> {
   const requestOptions = {
@@ -32,13 +29,13 @@ export async function fetchAllUsers(): Promise<User[]> {
   return fetchData(USERS_API);
 }
 
-export async function fetchUser(username: string): Promise<User> {
-  const fetchUserApi = `${USERS_API}/${username}`
+export async function fetchUser(userId: string): Promise<User> {
+  const fetchUserApi = `${USERS_API}/${userId}`
   return fetchData(fetchUserApi)
 }
 
-export async function deleteUser(username: string): Promise<void> {
-  const deleteUserApi = `${USERS_API}/${username}`
+export async function deleteUser(userId: string): Promise<void> {
+  const deleteUserApi = `${USERS_API}/${userId}`
   const requestOptions = {
     method: "DELETE"
   };
