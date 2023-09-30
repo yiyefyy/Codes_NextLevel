@@ -1,28 +1,24 @@
-import { Card, Title, Text } from '@tremor/react';
-import { fetchAllUsers } from '../pages/api/users/userApi';
-import Search from './search';
-import UsersTable from './table';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
+import Login from './login/page';
+import Dashboard from './dashboard/page';
 
 export const dynamic = 'force-dynamic';
 
-export default async function IndexPage({
-  searchParams
-}: {
-  searchParams: { q: string };
-}) {
-  const search = searchParams.q ?? '';
-  const users = await fetchAllUsers();
+export default async function IndexPage() {
+
+  const session = await getServerSession(authOptions);
+  
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Title>Users</Title>
-      <Text>
-        A list of users retrieved from a MySQL database (PlanetScale).
-      </Text>
-      <Search />
-      <Card className="mt-6">
-        <UsersTable users={users} />
-      </Card>
+    <main>
+      {session?.user ? (
+        <Dashboard/>
+      ) : (   // NOT LOGGED IN
+        <Login/>
+      )}
+
     </main>
   );
 }
+

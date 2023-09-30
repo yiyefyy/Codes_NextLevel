@@ -3,57 +3,38 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import LoadingDots from "./loading-dots";
-import toast from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Form({ type }: { type: "login" | "register" }) {
+export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const handleLogin = async (email: String, password:  String) => {
+    const data = await signIn("credentials", {
+      redirect: false,
+      email: email,
+      password: password,
+    });
+    
+    setLoading(false);
+    if (data?.error) {
+      toast.error(data.error)
+    } else {
+      router.refresh();
+      router.push("/dashboard")
+    }
+  }
+
   return (
+  <>
+    <Toaster position="bottom-center"/>
     <form
       onSubmit={(e) => {
         e.preventDefault();
         setLoading(true);
-        if (type === "login") {
-          signIn("credentials", {
-            redirect: false,
-            email: e.currentTarget.email.value,
-            password: e.currentTarget.password.value,
-            // @ts-ignore
-          }).then(({ error }) => {
-            if (error) {
-              setLoading(false);
-              toast.error(error);
-            } else {
-              router.refresh();
-              router.push("/protected");
-            }
-          });
-        } else {
-          fetch("/api/auth/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: e.currentTarget.email.value,
-              password: e.currentTarget.password.value,
-            }),
-          }).then(async (res) => {
-            setLoading(false);
-            if (res.status === 200) {
-              toast.success("Account created! Redirecting to login...");
-              setTimeout(() => {
-                router.push("/login");
-              }, 2000);
-            } else {
-              const { error } = await res.json();
-              toast.error(error);
-            }
-          });
-        }
+        handleLogin(e.currentTarget.email.value,  e.currentTarget.password.value);
       }}
       className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
     >
@@ -100,26 +81,16 @@ export default function Form({ type }: { type: "login" | "register" }) {
         {loading ? (
           <LoadingDots color="#808080" />
         ) : (
-          <p>{type === "login" ? "Sign In" : "Sign Up"}</p>
+          <p>Sign In</p>
         )}
       </button>
-      {type === "login" ? (
-        <p className="text-center text-sm text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-semibold text-gray-800">
-            Sign up
-          </Link>{" "}
-          for free.
-        </p>
-      ) : (
-        <p className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-gray-800">
-            Sign in
-          </Link>{" "}
-          instead.
-        </p>
-      )}
+      <p className="text-center text-sm text-gray-600">
+        For admins: Add new employees 
+        <Link href="/register" className="font-semibold text-gray-800">
+         {" "}here
+        </Link>
+      </p>
     </form>
+    </>
   );
 }

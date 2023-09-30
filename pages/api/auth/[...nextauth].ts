@@ -5,6 +5,7 @@ import { fetchData } from '../utils';
 const LOGIN_API = 'http://localhost:8000/users/login'
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt'
   },
@@ -28,20 +29,38 @@ export const authOptions: NextAuthOptions = {
             body: JSON.stringify(credentials)
           };
 
-        const user = await fetchData(LOGIN_API, requestOptions)
-          
-        if (!user) {
-            return null;
-        }
-
-        return user;
+        return fetchData(LOGIN_API, requestOptions)
       }
     })
   ],
+  callbacks: {
+    async jwt({token, user}) {
+      if (user) {
+        return {
+          ...token,
+          userId: user.userId,
+          firstName: user.firstName,
+          isAdmin: user.isAdmin
+        }
+      }
+      
+      return token;
+    },
+    async session({session, token}) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          userId: token.userId,
+          firstName: token.firstName,
+          isAdmin: token.isAdmin
+        }
+      }
+    }
+  },
   pages: {
     signIn: "/login",
-    // signUp: 
-  }
+  },
 };
 
 export default NextAuth(authOptions);
