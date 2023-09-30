@@ -1,7 +1,9 @@
 'use client';
-import React, { useState, useRef } from 'react';
-import CustomCard from '../../components/custom-card';
-import { Carousel } from 'react-responsive-carousel';
+
+import React, { useState } from 'react';
+import CustomCardAdmin from '../../components/custom-card-admin';
+import LineGraph from './LineGraph';
+import { Card, Metric, Text, Title, BarList, Flex, Grid, DonutChart } from '@tremor/react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export default function Dashboard() {
@@ -14,6 +16,8 @@ export default function Dashboard() {
         'Earn a digital certificate from MIT xPRO and enhance your AI knowledge',
       date: '1 Oct 2023',
       status: 'Open',
+      capacity: 20, 
+      signUps: 10,
       image:
         'https://media.istockphoto.com/id/499517325/photo/a-man-speaking-at-a-business-conference.jpg?s=612x612&w=0&k=20&c=gWTTDs_Hl6AEGOunoQ2LsjrcTJkknf9G8BGqsywyEtE='
     },
@@ -23,7 +27,9 @@ export default function Dashboard() {
       type: 'Workshop',
       description: 'Workshop Workshop',
       date: '1 Oct 2023',
-      status: 'Open'
+      status: 'Open',
+      capacity: 30, 
+      signUps: 30,
     },
     {
       id: 99,
@@ -31,7 +37,9 @@ export default function Dashboard() {
       type: 'Workshop',
       description: 'Workshop Workshop',
       date: '1 Oct 2023',
-      status: 'Open'
+      status: 'Open',
+      capacity: 100, 
+      signUps: 1,
     },
     {
       id: 100,
@@ -39,7 +47,9 @@ export default function Dashboard() {
       type: 'Workshop',
       description: 'Workshop Workshop',
       date: '1 Oct 2023',
-      status: 'Cancelled'
+      status: 'Cancelled',
+      capacity: 20, 
+      signUps: 0,
     },
     {
       id: 101,
@@ -48,7 +58,9 @@ export default function Dashboard() {
       description:
         'Organized in the scope of the 8th IEEE International Smart Cities Conference',
       date: '1 Oct 2023',
-      status: 'Registered',
+      status: 'Closed',
+      capacity: 20, 
+      signUps: 19,
       image:
         'https://images.ctfassets.net/3dar4x4x74wk/6eytQAc9gwE7u80yQu0sNZ/3f6bd009f0342b07357b0a6ed339855a/ME_Careers-Site_Home_Header_1536x800.jpg'
     },
@@ -58,7 +70,9 @@ export default function Dashboard() {
       type: 'Workshop',
       description: 'Workshop Workshop',
       date: '1 Oct 2023',
-      status: 'Open'
+      status: 'Open',
+      capacity: 20, 
+      signUps: 10,
     },
     {
       id: 103,
@@ -67,6 +81,8 @@ export default function Dashboard() {
       description: 'Activity Activity',
       date: '2 Oct 2023',
       status: 'Open',
+      capacity: 30, 
+      signUps: 10,
       image:
         'https://bestinsingapore.com/wp-content/uploads/2020/08/reformer-pilates-1569423354-1024x515.jpg'
     },
@@ -76,7 +92,9 @@ export default function Dashboard() {
       type: 'Activity',
       description: 'Activity Activity',
       date: '2 Oct 2023',
-      status: 'Registered'
+      status: 'Closed',
+      capacity: 50, 
+      signUps: 8,
     },
     {
       id: 105,
@@ -84,68 +102,95 @@ export default function Dashboard() {
       type: 'Activity',
       description: 'Activity Activity',
       date: '2 Oct 2023',
-      status: 'Cancelled'
+      status: 'Cancelled',
+      capacity: 10, 
+      signUps: 10,
     }
   ];
 
+
+const ratings = [
+    { name: 'AI Workshop', value: 4.9 },
+    { name: 'Pilates', value: 4 },
+    { name: 'Food Tasting', value: 5 },
+    { name: 'Safety Crashcourse', value: 4.7 },
+    { name: 'Global Discussion', value: 4.9 }
+  ];
+  
+  const eventDistribution = [
+    { name: 'Workshops', value: 23 },
+    { name: 'Activities', value: 34 }
+  ];
+
+  const sumOfValues = (data) => {
+    return data.reduce((accumulator, currentValue) => accumulator + currentValue.value, 0);
+  };
+  const totalEvents = sumOfValues(eventDistribution)
+  
+
   const [currentTab, setCurrentTab] = useState('Workshop');
+
+  const avg_rating = 4.5 // TODO 
 
   const filteredCards =
     currentTab === 'Workshop'
       ? eventCards.filter((card) => card.type === 'Workshop')
       : eventCards.filter((card) => card.type === 'Activity');
 
-  const carouselImages = [
-    ...eventCards
-      .filter((item) => [97, 101, 103].includes(item.id))
-      .map((item) => ({ image: item.image, title: item.title }))
-  ];
-
-  const handleClick = (index: number) => {
-    const clickedImage = carouselImages[index];
-    if (clickedImage) {
-      const targetType = eventCards.find(
-        (card) => card.title === clickedImage.title
-      )?.type;
-      if (targetType) {
-        setCurrentTab(targetType);
-
-        // const cardId = `card-${eventCards[index].id}`;
-        // const customCardElement = document.getElementById(cardId);
-        // if (customCardElement) {
-        //   customCardElement.scrollIntoView({ behavior: 'smooth' });
-        // }
-      }
-    }
-  };
-
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-10xl">
-      <div className="mb-4 rounded-lg overflow-hidden">
-        <Carousel
-          showThumbs={false}
-          infiniteLoop={true}
-          emulateTouch={true}
-          useKeyboardArrows={true}
-        >
-          {carouselImages.map((workshop, index) => (
-            <div key={index} onClick={() => handleClick(index)}>
-              <img
-                src={workshop.image}
-                alt={`Image ${index}`}
-                style={{
-                  width: '100%',
-                  maxHeight: '600px',
-                  objectFit: 'cover'
-                }}
-              />
-              <p className="text-white text-8xl absolute bottom-8 left-8">
-                {workshop.title}
-              </p>
-            </div>
-          ))}
-        </Carousel>
+    <main className="flex p-4 md:p-10 mx-auto min-w-2xl max-w-8xl flex-row justify-center">
+      <div>
+        <LineGraph/>
+        <Grid numItemsSm={1} numItemsLg={2} className="gap-6">
+            <Card key="Best Rated Events">
+                <Title>Best Rated Events</Title>
+                <Flex
+                justifyContent="start"
+                alignItems="baseline"
+                className="space-x-2"
+                >
+                <Metric>{avg_rating}/5</Metric>
+                <Text>Average rating</Text>
+                </Flex>
+                <Flex className="mt-6">
+                <Text>Event</Text>
+                <Text className="text-right">Rating</Text>
+                </Flex>
+                <BarList
+                data={ratings}
+                valueFormatter={(number: number) =>
+                    Intl.NumberFormat('us').format(number).toString()
+                }
+                className="mt-2"
+                />
+            </Card>
+            <Card key="Event Distribution">
+                <Title>Event Distribution</Title>
+                <Flex
+                justifyContent="start"
+                alignItems="baseline"
+                className="space-x-2"
+                >
+                <Metric>{totalEvents}</Metric>
+                <Text>Total Events in September</Text>
+                </Flex>
+                <Flex className="mt-6">
+                <Text>Activities</Text>
+                <Text className="text-right">Workshops</Text>
+                </Flex>
+                <DonutChart
+                data={eventDistribution}
+                valueFormatter={(number: number) =>
+                    Intl.NumberFormat('us').format(number).toString()
+                }
+                className="mt-2"
+                />
+            </Card>
+        </Grid>
       </div>
+
+      <div className="ml-5"> 
+      <h1 className="text-lg font-medium">Upcoming</h1>
 
       <div className="flex mb-4">
         <button
@@ -172,15 +217,19 @@ export default function Dashboard() {
 
       {filteredCards.map((card, index) => (
         <div id={`card-${card.id}`} key={index}>
-          <CustomCard
+          <CustomCardAdmin
             title={card.title}
             description={card.description}
             date={card.date}
             status={card.status}
+            capacity={card.capacity}
+            signUps={card.signUps}
             style={{ marginBottom: '16px' }}
           />
         </div>
       ))}
+        </div>
+
     </main>
   );
 }
