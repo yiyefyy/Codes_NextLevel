@@ -6,7 +6,7 @@ import { Disclosure } from '@headlessui/react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', user: true, admin: true },
-  { name: 'My Schedule', href: '/my-schedule', user: true, admin: false },
+  { name: 'My Schedule', href: '/mySchedule', user: true, admin: false },
   { name: 'Manage Events', href: '/manageEvents', user: false, admin:true }
 ];
 
