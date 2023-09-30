@@ -2,6 +2,8 @@ import { Card, Title, Text } from '@tremor/react';
 import { fetchAllUsers } from '../pages/api/users/userApi';
 import Search from './search';
 import UsersTable from './table';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
 
 export const dynamic = 'force-dynamic';
 
@@ -10,6 +12,9 @@ export default async function IndexPage({
 }: {
   searchParams: { q: string };
 }) {
+
+  const session = await getServerSession(authOptions);
+  console.log(session);
   const search = searchParams.q ?? '';
   const users = await fetchAllUsers();
 

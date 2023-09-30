@@ -31,7 +31,6 @@ export default function RegisterForm() {
   const handleRegister = async (user : User) => {
     try {
       user.isAdmin = `${isAdmin}`;
-      console.log(user);
       await createUser(user);
       setLoading(false);
       setIsAdmin(false);
