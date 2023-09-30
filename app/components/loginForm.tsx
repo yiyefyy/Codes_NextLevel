@@ -6,8 +6,6 @@ import LoadingDots from "./loading-dots";
 import toast, {Toaster} from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
 
 export default function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -25,7 +23,7 @@ export default function LoginForm() {
       toast.error(data.error)
     } else {
       router.refresh();
-      router.push("/"); // TODO: check for admin rights
+      router.push("/"); 
     }
   }
 
