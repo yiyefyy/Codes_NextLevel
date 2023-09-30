@@ -6,7 +6,7 @@ const addUser = async (req, res, next) => {
     try {
         const {userId, firstName, lastName, email, department, designation, password, isAdmin } = req.body;
     
-        if ( !userId, !firstName || !lastName || !email || !department || !designation || !password || !isAdmin) {
+        if ( !userId, !firstName || !lastName || !email || !department || !designation || !password || isAdmin == null) {
             res.status(400).json({error: "Missing field"});
             return;
         }
@@ -30,7 +30,7 @@ const addUser = async (req, res, next) => {
         const user = await Users.create({
             userId: userId,
             firstName: firstName,
-            lasName: lastName,
+            lastName: lastName,
             email: email,
             department: department,
             designation: designation,

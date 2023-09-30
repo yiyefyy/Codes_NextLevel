@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         comment: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
     })
 
     return Feedbacks;

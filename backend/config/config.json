@@ -2,21 +2,21 @@
   "development": {
     "username": "root",
     "password": "nextlevel",
-    "database": "Users",
+    "database": "psa",
     "host": "34.87.55.244",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "nextlevel",
-    "database": "Users",
+    "database": "psa",
     "host": "34.87.55.244",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "nextlevel",
-    "database": "Users",
+    "database": "psa",
     "host": "34.87.55.244",
     "dialect": "mysql"
   }

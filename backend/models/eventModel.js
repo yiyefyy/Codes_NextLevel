@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const Events = sequelize.define("Events", {
         eventId: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
         },
         eventName: {
             type: DataTypes.STRING,
@@ -36,8 +36,8 @@ module.exports = (sequelize, DataTypes) => {
     })
 
     Events.associate = (models) => {
-        Events.belongsToMany(models.Users, { through: models.RegisteredEvents, foreignKey: 'eventId' });
-        Events.belongsToMany(models.Users, { through: models.Feedbacks, foreignKey: 'eventId' });
+        Events.belongsToMany(models.Users, { through: models.RegisteredEvents, foreignKey: 'eventId',  as: 'users'});
+        Events.belongsToMany(models.Users, { through: models.Feedbacks, foreignKey: 'eventId', as: 'feedbacks' });
     }
 
     return Events;
