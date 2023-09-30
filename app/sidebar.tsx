@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Disclosure } from '@headlessui/react';
@@ -7,14 +8,13 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', userOnly: true },
   { name: 'My Schedule', href: '/my-schedule' },
   { name: 'Manage Events', href: '/manageEvents' }
-
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Sidebar() {
+export default async function Sidebar() {
   const pathname = usePathname();
 
   return (
