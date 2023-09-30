@@ -14,20 +14,36 @@ export default async function IndexPage({
 }) {
 
   const session = await getServerSession(authOptions);
-  console.log(session);
+  
   const search = searchParams.q ?? '';
   const users = await fetchAllUsers();
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Title>Users</Title>
-      <Text>
-        A list of users retrieved from a MySQL database (PlanetScale).
-      </Text>
-      <Search />
-      <Card className="mt-6">
-        <UsersTable users={users} />
-      </Card>
+      {/* <Title>Users</Title> */}
+      <Title>Welcome, {session?.user.firstName}</Title>
+      {session?.user ? (
+        session?.user.isAdmin ? (   // LOGGED IN AS ADMIN
+        <>
+          <Text>
+            Track all PSA employees here
+          </Text>
+          <Search />
+          <Card className="mt-6">
+            <UsersTable users={users} />
+          </Card>
+        </>
+        ) : (   // LOGGED IN AS REGULAR EMPLOYEE
+        <Text>
+          You do not have permissions to view users.
+        </Text>
+        )) : (   // NOT LOGGED IN
+        <Text>
+          Please sign in.
+        </Text>
+      )}
+
     </main>
   );
 }
+
