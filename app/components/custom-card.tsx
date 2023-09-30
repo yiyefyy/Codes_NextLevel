@@ -27,6 +27,12 @@ function CustomCard({
   const [cardStatus, setCardStatus] = useState(status);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedback, setFeedback] = useState({
+    rating: 0,
+    comment: ''
+  });
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const statusClass =
     cardStatus === 'Registered'
@@ -70,6 +76,19 @@ function CustomCard({
 
   const handleCancelCancellation = () => {
     setShowCancelModal(false);
+  };
+
+  const handleLeaveFeedback = () => {
+    setShowFeedbackModal(true);
+  };
+
+  const handleFeedbackSubmit = () => {
+    setFeedbackSubmitted(true);
+    setShowFeedbackModal(false);
+  };
+
+  const handleFeedbackCancelSubmit = () => {
+    setShowFeedbackModal(false);
   };
 
   return (
@@ -132,7 +151,61 @@ function CustomCard({
             </>
           ) : cardStatus === 'Registered' && cardDate < currentDate ? (
             <>
-              <CustomButton primary>Leave Feedback</CustomButton>
+              {feedbackSubmitted ? (
+                <CustomButton>View Feedback</CustomButton>
+              ) : (
+                <CustomButton primary onClick={handleLeaveFeedback}>
+                  Leave Feedback
+                </CustomButton>
+              )}
+              {showFeedbackModal && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white p-4 rounded shadow-md">
+                    <p className="flex text-xl font-semibold">Feedback</p>
+                    <div className="mt-4 flex">
+                      <label htmlFor="rating" className="mr-4">
+                        Rating:
+                      </label>
+                      <select
+                        id="rating"
+                        value={feedback.rating}
+                        onChange={(e) =>
+                          setFeedback({
+                            ...feedback,
+                            rating: parseInt(e.target.value)
+                          })
+                        }
+                      >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
+                    <div className="mb-4 justify-center items-center">
+                      <label htmlFor="comment" className="mr-4">
+                        Comment:
+                      </label>
+                      <textarea
+                        id="comment"
+                        value={feedback.comment}
+                        onChange={(e) =>
+                          setFeedback({ ...feedback, comment: e.target.value })
+                        }
+                      ></textarea>
+                    </div>
+                    <div className="flex justify-end">
+                      <CustomButton onClick={handleFeedbackCancelSubmit}>
+                        Cancel
+                      </CustomButton>
+                      <CustomButton onClick={handleFeedbackSubmit}>
+                        Submit
+                      </CustomButton>
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           ) : null}
         </p>
