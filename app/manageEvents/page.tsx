@@ -1,11 +1,11 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import { Divider } from "@tremor/react";
-import EventForm from '../../components/event-form';
+import EventForm from '../components/event-form';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import CustomCardEdit from '../../components/custom-card-edit';
+import CustomCardEdit from '../components/custom-card-edit';
 
-export default function Dashboard() {
+export default function ManageEvents() {
 
     const eventCards = [
         {
