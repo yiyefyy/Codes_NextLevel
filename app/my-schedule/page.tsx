@@ -1,8 +1,8 @@
 'use client';
 import React, { useState, useRef } from 'react';
-import CustomCard from '../../components/custom-card';
-import { eventData } from '../../data/EventData';
-import { useEventContext } from '../../data/EventProvider';
+import CustomCard from '../components/custom-card';
+import { eventData } from '../data/EventData';
+import { useEventContext } from '../data/EventProvider';
 interface EventType {
   id: number;
   title: string;

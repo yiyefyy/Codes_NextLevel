@@ -1,9 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import CustomCard from '../../components/custom-card';
+import CustomCard from '../components/custom-card';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { useEventContext } from '../../data/EventProvider';
+import { useEventContext } from '../data/EventProvider';
 
 interface EventType {
   id: number;
