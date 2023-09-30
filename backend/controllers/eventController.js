@@ -112,9 +112,15 @@ const signupForEvent = async (req, res, next) => {
             userId: userId,
             eventId: eventId,
         });
+        
+        if (event.signUps == event.capacity) {
+            event.status = 'closed';
+            await event.save();
+            return res.status(400).json({ error: 'Event is at full capacity' });
+        }
 
         event.increment('signUps');
-        if (event.signUps >= event.capacity) {
+        if (event.signUps == event.capacity) {
             event.status = 'closed';
             await event.save();
             return res.status(400).json({ error: 'Event is at full capacity' });
