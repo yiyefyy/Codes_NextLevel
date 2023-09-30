@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import CustomCardAdmin from '../../components/custom-card-admin';
 import LineGraph from './LineGraph';
-import { Card, Metric, Text, Title, BarList, Flex, Grid, DonutChart } from '@tremor/react';
+import { Card, Metric, Text, Title, BarList, Flex, Grid, DonutChart, Legend } from '@tremor/react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export default function Dashboard() {
@@ -175,8 +175,6 @@ const ratings = [
                 <Text>Total Events in September</Text>
                 </Flex>
                 <Flex className="mt-6">
-                <Text>Activities</Text>
-                <Text className="text-right">Workshops</Text>
                 </Flex>
                 <DonutChart
                 data={eventDistribution}
@@ -185,12 +183,17 @@ const ratings = [
                 }
                 className="mt-2"
                 />
+                <Legend
+                    className="mt-3"
+                    categories={["Activities", "Workshops"]}
+                    colors={["teal", "blue"]}
+                />
             </Card>
         </Grid>
       </div>
 
       <div className="ml-5"> 
-      <h1 className="text-lg font-medium">Upcoming</h1>
+      <h1 className="text-lg font-medium font-semibold">Upcoming</h1>
 
       <div className="flex mb-4">
         <button
