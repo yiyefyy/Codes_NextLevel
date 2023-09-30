@@ -28,19 +28,12 @@ export const authOptions: NextAuthOptions = {
             body: JSON.stringify(credentials)
           };
 
-        const user = await fetchData(LOGIN_API, requestOptions)
-          
-        if (!user) {
-            return null;
-        }
-
-        return user;
+        return fetchData(LOGIN_API, requestOptions)
       }
     })
   ],
   pages: {
     signIn: "/login",
-    // signUp: 
   }
 };
 
