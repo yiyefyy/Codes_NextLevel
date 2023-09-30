@@ -30,7 +30,7 @@ const addUser = async (req, res, next) => {
         const user = await Users.create({
             userId: userId,
             firstName: firstName,
-            lasName: lastName,
+            lastName: lastName,
             email: email,
             department: department,
             designation: designation,

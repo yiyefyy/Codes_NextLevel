@@ -23,7 +23,7 @@ export default function LoginForm() {
       toast.error(data.error)
     } else {
       router.refresh();
-      router.push("/protected");
+      router.push("/"); // TODO: check for admin rights
     }
   }
 
@@ -85,11 +85,10 @@ export default function LoginForm() {
         )}
       </button>
       <p className="text-center text-sm text-gray-600">
-        Don&apos;t have an account?{" "}
+        For admins: Add new employees 
         <Link href="/register" className="font-semibold text-gray-800">
-          Sign up
-        </Link>{" "}
-        for free.
+         {" "}here
+        </Link>
       </p>
     </form>
     </>

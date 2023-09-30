@@ -3,13 +3,15 @@
 import { useState } from "react";
 import LoadingDots from "./loading-dots";
 import toast, {Toaster} from "react-hot-toast";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createUser, User } from "../../pages/api/users/userApi";
+import CheckIcon from '@mui/icons-material/Check';
+import ToggleButton from '@mui/material/ToggleButton';
 
 export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser]= useState<User>({
     userId: 0,
     firstName: "",
@@ -28,8 +30,11 @@ export default function RegisterForm() {
 
   const handleRegister = async (user : User) => {
     try {
+      user.isAdmin = `${isAdmin}`;
+      console.log(user);
       await createUser(user);
       setLoading(false);
+      setIsAdmin(false);
       toast.success("Account created! Redirecting to login...");
 
       setTimeout(() => {
@@ -66,7 +71,7 @@ export default function RegisterForm() {
           type="number"
           placeholder="12345"
           required
-          onChange={e => handleChange(e, "username")} 
+          onChange={e => handleChange(e, "userId")} 
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
@@ -174,6 +179,24 @@ export default function RegisterForm() {
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
+      <div className="flex space-x-4 justify-center items-center">
+        <label
+          htmlFor="isAdmin"
+          className="block text-xs text-gray-600 uppercase"
+        >
+          Grant admin rights?
+        </label>
+        <ToggleButton
+          value="check"
+          selected={isAdmin}
+          onChange={() => {
+            setIsAdmin(!isAdmin);
+          }}
+          style={{ width: '20px', height: '20px' }}
+        >
+          <CheckIcon style={{ fontSize: '15px' }}  />
+        </ToggleButton>
+      </div>
       <button
         disabled={loading}
         className={`${
@@ -188,13 +211,6 @@ export default function RegisterForm() {
           <p>Add Employee</p>
         )}
       </button>
-        {/* <p className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-gray-800">
-            Add Employee
-          </Link>{" "}
-          instead.
-        </p> */}
     </form>
     </>
   );
