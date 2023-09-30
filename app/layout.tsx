@@ -5,6 +5,8 @@ import Nav from './nav';
 import { Suspense } from 'react';
 import Sidebar from './sidebar';
 import { EventProvider } from './data/EventProvider';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
 
 export const metadata = {
   title: 'Next Level - PSA',
@@ -17,6 +19,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en" className="h-full bg-gray-50 overflow-hidden">
       <body className="h-full">
@@ -27,7 +31,11 @@ export default async function RootLayout({
         </div>
         <div className="flex h-full">
           <div className="overflow-hidden">
-            <Sidebar />
+            { session?.user ? (
+              <Sidebar isAdmin={session?.user.isAdmin}/>
+            ) :
+              <></>
+            }
           </div>
           <div className="flex-1 overflow-y-auto">
             {' '}
