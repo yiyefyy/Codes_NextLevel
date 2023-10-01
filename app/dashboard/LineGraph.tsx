@@ -46,7 +46,12 @@ export default function LineGraph() {
           }
         })
         console.log(engagement)
-        setEngagementRate(engagement)
+        const sortedEngagement = [...engagement].sort((a, b) => {
+          const dateA = new Date(a.date).getTime();
+          const dateB = new Date(b.date).getTime();
+          return dateA - dateB;
+        });
+        setEngagementRate(sortedEngagement)
 
       } catch (error) {
         // Handle error
