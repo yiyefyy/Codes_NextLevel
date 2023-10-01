@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { Card, AreaChart, Title, Text } from '@tremor/react';
-import {  fetchAllEvents } from '../../pages/api/eventApis';
-import { Event } from '../../pages/api/interfaces';
+import { NewEvent, fetchAllEvents } from '../../pages/api/eventApis';
 
 export default function LineGraph() {
 
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<NewEvent[]>([]);
   const [engagementRate, setEngagementRate] = useState<{ date: string, year_2022: number, year_2023: number }[]>([]);
 
   useEffect(() => {
@@ -32,10 +31,10 @@ export default function LineGraph() {
         console.log(eventsCurrYear)
 
         const engagement = eventsCurrYear.map((event) => {
-          const rate = ((event.signups / event.capacity) * 100).toFixed(1);
+          const rate = ((event.signUps / event.capacity) * 100).toFixed(1);
 
           const dateObject = new Date(event.date);
-          const pastYearRate = ((event.signups / event.capacity) * 70).toFixed(1) // to be replaced with actual data
+          const pastYearRate = ((event.signUps / event.capacity) * 70).toFixed(1) // to be replaced with actual data
           const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
           const day = dateObject.getUTCDate().toString().padStart(2, '0');
 

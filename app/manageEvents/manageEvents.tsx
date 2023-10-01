@@ -4,12 +4,11 @@ import { Divider } from "@tremor/react";
 import EventForm from '../components/event-form';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CustomCardEdit from '../components/custom-card-edit';
-import { fetchAllEvents } from '../../pages/api/eventApis';
-import { Event } from '../../pages/api/interfaces';
+import { fetchAllEvents, NewEvent } from '../../pages/api/eventApis';
 
 export default function ManageEvents() {
 
-  const [eventCard, setEventCard] = useState<Event[]>([]);
+  const [eventCard, setEventCard] = useState<NewEvent[]>([]);
 
  
   useEffect(() => {
@@ -52,7 +51,7 @@ export default function ManageEvents() {
                         date={card.date.toString().split('T')[0]}
                         status={card.status}
                         capacity={card.capacity}
-                        signUps={card.signups}
+                        signUps={card.signUps}
                         style={{ marginBottom: '16px' }}
                     />
                     </div>

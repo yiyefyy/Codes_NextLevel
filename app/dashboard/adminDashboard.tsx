@@ -5,13 +5,12 @@ import CustomCardAdmin from '../components/custom-card-admin';
 import LineGraph from './LineGraph';
 import { Card, Metric, Text, Title, BarList, Flex, Grid, DonutChart, Legend } from '@tremor/react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { fetchAllEvents } from '../../pages/api/eventApis';
-import { Event } from '../../pages/api/interfaces';
+import { NewEvent, fetchAllEvents } from '../../pages/api/eventApis';
 import { getFeedbacks } from '../../pages/api/feedbackApi';
 
 export default function AdminDashboard() {
 
-  const [eventCards, setEventCards] = useState<Event[]>([]);
+  const [eventCards, setEventCards] = useState<NewEvent[]>([]);
   const [ratedCards, setRatedCards] = useState<{ name: string, value: number }[]>([]);
   useEffect(() => {
     // Fetch events when the component mounts
@@ -39,9 +38,9 @@ export default function AdminDashboard() {
           })
         );
 
-          const sortedCards = eventRatings.sort((a, b) => b.value - a.value)
+          const sortedCards = (eventRatings.filter((event) => event.value !=0))
 
-          setRatedCards(sortedCards);
+          setRatedCards(sortedCards.sort((a, b) => b.value - a.value));
         
       } catch (error) {
         // Handle error
@@ -157,7 +156,7 @@ export default function AdminDashboard() {
               date={card.date.toString().split('T')[0]}
               status={card.status}
               capacity={card.capacity}
-              signUps={card.signups}
+              signUps={card.signUps}
               style={{ marginBottom: '16px' }}
             />
           </div>

@@ -41,11 +41,15 @@ export async function createEvent(event: NewEvent): Promise<NewEvent> {
   return fetchData(add_api, requestOptions)
 }
 
-export async function fetchAllEvents(): Promise<Event[]> {
+export async function fetchAllEvents(): Promise<NewEvent[]> {
   return fetchData(EVENTS_API);
 }
 
-export async function fetchEvent(eventId: string): Promise<Event> {
+export async function fetchAllEmployeeEvents(): Promise<Event[]> {
+  return fetchData(EVENTS_API);
+}
+
+export async function fetchEvent(eventId: string): Promise<NewEvent> {
   const fetchEventApi = `${EVENTS_API}/${eventId}`
   return fetchData(fetchEventApi)
 }
