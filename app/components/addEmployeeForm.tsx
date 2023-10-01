@@ -4,10 +4,10 @@ import { useState } from "react";
 import LoadingDots from "./loading-dots";
 import toast, {Toaster} from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createUser, User } from "../../pages/api/userApi";
+import { createUser } from "../../pages/api/userApi";
+import { User } from "../../pages/api/interfaces";
 import CheckIcon from '@mui/icons-material/Check';
 import ToggleButton from '@mui/material/ToggleButton';
-import Link from "next/link";
 
 export default function AddEmployeeForm() {
   const [loading, setLoading] = useState(false);
@@ -75,8 +75,8 @@ export default function AddEmployeeForm() {
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
-      <div className="flex space-x-4">
-      <div>
+      <div className="flex flex-row  space-x-4">
+      <div className="flex-grow">
         <label
           htmlFor="firstName"
           className="block text-xs text-gray-600 uppercase"
@@ -93,7 +93,7 @@ export default function AddEmployeeForm() {
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
-      <div>
+      <div className="flex-grow">
         <label
           htmlFor="lastName"
           className="block text-xs text-gray-600 uppercase"
@@ -195,12 +195,6 @@ export default function AddEmployeeForm() {
           <p>Add Employee</p>
         )}
       </button>
-      <p className="text-center text-sm text-gray-600">
-        Not an Admin?
-        <Link href="/login" className="font-semibold text-gray-800">
-         {" "}Login instead
-        </Link>
-      </p>
     </form>
     </>
   );

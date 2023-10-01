@@ -74,7 +74,7 @@ export default function Schedule({userId} : {userId: Number}) {
   }
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <main className="p-4 md:p-10 mx-auto max-w-7xl mb-20">
       <div className="flex mb-4">
         <button
           onClick={() => setCurrentTab('Upcoming')}

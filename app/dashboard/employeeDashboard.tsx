@@ -85,7 +85,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
 
 
   return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
+    <main className="p-4 md:p-10 mx-auto max-w-7xl mb-20">
       <div className="mb-4 rounded-lg overflow-hidden">
         <Carousel
           showThumbs={false}
