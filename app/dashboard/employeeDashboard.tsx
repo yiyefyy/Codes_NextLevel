@@ -27,7 +27,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
   const getAllEvents = async () => {
     try {
       const data = await fetchAllEvents();
-      data.map((item) => setStatus(item));
+      await Promise.all(data.map(async (item) => await setStatus(item))); 
       setEventData(data);
       setLoading(false);
     } catch (err : any) {

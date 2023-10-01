@@ -64,9 +64,8 @@ const registerForEvent = async (req, res, next) => {
             await event.save();
             return res.status(400).json({ error: 'Event is at full capacity' });
         }
-
         
-        res.status(201).json({ res: actualEvent});
+        res.status(201).json({ res: event});
 
     } catch (err) {
         next(err);
