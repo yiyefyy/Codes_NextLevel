@@ -38,13 +38,13 @@ function CustomCard({
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const statusClass =
-    cardStatus === 'Registered'
+    cardStatus.toUpperCase() === 'REGISTERED'
       ? 'text-blue-500'
-      : cardStatus === 'Attended'
+      : cardStatus.toUpperCase() === 'ATTENDED'
       ? 'text-orange-500'
-      : cardStatus === 'Open'
+      : cardStatus.toUpperCase() === 'OPEN'
       ? 'text-green-500'
-      : cardStatus === 'Cancelled'
+      : cardStatus.toUpperCase() === 'CANCELLED'
       ? 'text-gray-500'
       : '';
 

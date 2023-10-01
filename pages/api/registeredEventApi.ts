@@ -16,9 +16,18 @@ export async function registerForEvent(userId: string, eventId: string): Promise
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(eventId)
+      body: JSON.stringify({"eventId": eventId})
     };
     return fetchData(getEventsApi, requestOptions);
+}
+
+export async function hasRegistered(userId: string, eventId: string) : Promise<Boolean> {
+  try {
+    const events = await getRegisteredEvents(userId);
+    return events.some((item) => `${item.eventId}` === eventId);
+  } catch (err) {
+    return false;
+  }
 }
 
 export async function deregisterFromEvent(userId: string, eventId: string): Promise<void> {

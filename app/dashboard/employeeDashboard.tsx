@@ -7,7 +7,7 @@ import { useEventContext } from '../data/EventProvider';
 import { fetchAllEvents } from '../../pages/api/eventApis';
 import toast from 'react-hot-toast';
 import { Event } from '../../pages/api/interfaces';
-import { deregisterFromEvent, registerForEvent } from '../../pages/api/registeredEventApi';
+import { deregisterFromEvent, hasRegistered, registerForEvent } from '../../pages/api/registeredEventApi';
 
 export default function EmployeeDashboard({userId} : {userId: Number}) {
   const {
@@ -27,6 +27,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
   const getAllEvents = async () => {
     try {
       const data = await fetchAllEvents();
+      data.map((item) => setStatus(item));
       setEventData(data);
       setLoading(false);
     } catch (err : any) {
@@ -35,11 +36,19 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
     }
   }
 
+  const setStatus = async (data : Event) => {
+    const isRegistered = await hasRegistered(`${userId}`, `${data.eventId}`);
+    console.log(isRegistered);
+
+    if (isRegistered) {
+      data.status = 'Registered';
+    }
+  }
+
   const filteredCards =
     currentTab === 'Workshop'
       ? eventData.filter((card: Event) => {
           const cardDate = new Date(card.date);
-          card.status = card.status == 'Registered' ? 'Registered' : 'Open';
           return card.eventType.toUpperCase() === 'WORKSHOP' && cardDate > currentDate;
         })
       : eventData.filter((card: Event) => {
@@ -55,11 +64,12 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
 
   const handleSignUpForEvent = async (eventId : number) => {
     try {
-      const event = await registerForEvent(`${userId}`, `${eventId}`);
-
-      //TODO: udpate this
-      updateEventStatus(eventId, 'Registered');
-      addEventToUpcoming(eventId);
+      await registerForEvent(`${userId}`, `${eventId}`);
+      filteredCards.map((item) => {
+      if (item.eventId == eventId) {
+          item.status = 'Registered'
+        }
+      })
     } catch (error : any) {
       toast.error(error.message);
     }
@@ -68,9 +78,12 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
   const handleCancelForEvent = async (eventId: number) => {
     try {
       await deregisterFromEvent(`${userId}`, `${eventId}`);
-      // TODO: udpate this
-      updateEventStatus(eventId, 'Open');
-      removeEventFromUpcoming(eventId);
+
+      filteredCards.map((item) => {
+        if (item.eventId == eventId) {
+            item.status = 'Open'
+          }
+        })
 
     } catch (error : any) {
       toast.error(error.message);
@@ -129,8 +142,8 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
         </button>
       </div>
 
-      {filteredCards.map((card: Event, index: number) => (
-        <div id={`card-${card.eventId}`} key={index}>
+      {filteredCards.map((card: Event) => (
+        <div id={`card-${card.eventId}`} key={card.eventId}>
           <CustomCard
             employeeId={userId}
             eventId = {card.eventId}

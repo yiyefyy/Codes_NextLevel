@@ -29,6 +29,11 @@ export async function fetchEvent(eventId: string): Promise<Event> {
   return fetchData(fetchEventApi)
 }
 
+export async function fetchEventStatus(eventId: string): Promise<String> {
+  const event = await fetchEvent(eventId);
+  return event.status;
+}
+
 export async function changeEventStatus(eventId: string): Promise<void> {
   const requestOptions = {
     method: "PUT",
