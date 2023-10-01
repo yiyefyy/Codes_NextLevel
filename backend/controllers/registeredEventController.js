@@ -54,6 +54,14 @@ const registerForEvent = async (req, res, next) => {
             status
         });
 
+        event.increment('signUps');
+
+        if (event.signUps == event.capacity) {
+            event.status = 'closed';
+            await event.save();
+            return res.status(400).json({ error: 'Event is at full capacity' });
+        }
+
         
         res.status(200).json({ res: newEvent});
 
@@ -82,8 +90,23 @@ const deregisterFromEvent = async (req, res, next) => {
             res.status(404).json({ error: "User has not registered for this" });
             return;
         }
+        const currDate = new Date()
+
+        if (event.date <= currDate) {
+            res.status(404).json({ error: "Event has passed!" });
+            return;
+        }
 
         await RegisteredEvents.destroy({where: {userId, eventId}});
+
+        event.signUps -= 1;
+
+        if (event.signUps < event.capacity) {
+            event.status = 'open';
+            await event.save();
+            return res.status(200).json({ res: event });
+        }
+
         res.sendStatus(204);
     } catch (err) {
         next(err);
