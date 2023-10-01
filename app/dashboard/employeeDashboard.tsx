@@ -51,7 +51,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
 
   const carouselImages = [
     ...eventData
-      .filter((item: Event) => item.image != null)
+      .filter((item: Event) => item.image != null && item.image != "")
       .map((item: Event) => ({ image: item.image, title: item.eventName }))
   ];
 

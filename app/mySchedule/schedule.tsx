@@ -6,6 +6,7 @@ import { checkHasRegistered, deregisterFromEvent, getRegisteredEvents } from '..
 import Loading from '../loading';
 import toast from 'react-hot-toast';
 import { checkHasFeedback } from '../../pages/api/feedbackApi';
+import { Title } from '@tremor/react';
 
 export default function Schedule({userId} : {userId: Number}) {
   const [eventData, setEventData] = useState<Event[]>([]);
