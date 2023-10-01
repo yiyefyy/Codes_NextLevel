@@ -35,12 +35,7 @@ export default function AddEmployeeForm() {
       await createUser(user);
       setLoading(false);
       setIsAdmin(false);
-      toast.success("Account created! Redirecting to login...");
-
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
-
+      toast.success("Account created!");
     } catch (error : any) {
       setLoading(false);
       toast.error(error.message);

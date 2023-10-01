@@ -3,6 +3,16 @@ import { Event } from "./interfaces";
 
 const EVENTS_API = 'http://localhost:8000/events';
 
+export interface updateEvents {
+  eventName: string,
+  eventType: string,
+  description: string,
+  date: Date,
+  capacity: number,
+  status: string;
+  image: string
+}
+
 export interface Signup {
   userId: number,
   eventId: number
@@ -34,19 +44,21 @@ export async function fetchEventStatus(eventId: string): Promise<String> {
   return event.status;
 }
 
-export async function changeEventStatus(eventId: string): Promise<void> {
+export async function changeEventStatus(eventId: string, status: string): Promise<void> {
   const requestOptions = {
     method: "PUT",
+    mode: 'cors',
     headers: {
-      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(eventId)
+    body: JSON.stringify(status)
   };
   const add_api = `${EVENTS_API}/status/${eventId}`
   return fetchData(add_api, requestOptions)
 }
 
-export async function updateEvent(event: Event): Promise<Event> {
+export async function updateEvent(event: updateEvents, eventId: string): Promise<updateEvents> {
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -54,7 +66,7 @@ export async function updateEvent(event: Event): Promise<Event> {
     },
     body: JSON.stringify(event)
   };
-  const add_api = `${EVENTS_API}/update/${event.eventId}`
+  const add_api = `${EVENTS_API}/update/${eventId}`
   return fetchData(add_api, requestOptions)
 }
 

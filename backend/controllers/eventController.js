@@ -97,7 +97,7 @@ const signupForEvent = async (req, res, next) => {
             return res.status(404).json({ error: 'User or event not found' });
         }
 
-        if (event.status != "open") {
+        if (event.status != "Open") {
             return res.status(400).json({error: "Event is not available!"})
         }
 
@@ -119,7 +119,7 @@ const signupForEvent = async (req, res, next) => {
         event.increment('signUps');
 
         if (event.signUps == event.capacity) {
-            event.status = 'closed';
+            event.status = 'Closed';
             await event.save();
             return res.status(400).json({ error: 'Event is at full capacity' });
         }
@@ -141,7 +141,7 @@ const updateEvent = async (req, res, next) => {
             return;
         }
 
-        const { eventName, eventType, description, date, capacity, image } = req.body;
+        const { eventName, eventType, description, date, capacity, status, image } = req.body;
 
         if (eventName && typeof eventName == 'string') {
             event.eventName = eventName;
@@ -161,6 +161,10 @@ const updateEvent = async (req, res, next) => {
 
         if (capacity && typeof capacity == "number") {
             event.capacity = capacity;
+        }
+
+        if (status && typeof status == "string") {
+            event.status = status;
         }
 
         if (image && typeof image == 'string') {

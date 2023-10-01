@@ -25,7 +25,7 @@ export async function checkHasFeedback(userId: string, eventId: string): Promise
   return data != null;
 }
 
-export async function getFeedbacks(eventId: string): Promise<Feedback[]> {
+export async function getFeedbacks(eventId: number): Promise<Feedback[]> {
   const getFeedbackApi = `${FEEDBACK_API}/${eventId}`
   return fetchData(getFeedbackApi);
 }
