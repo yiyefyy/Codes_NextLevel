@@ -42,8 +42,8 @@ export default function ManageEvents() {
                 <EventForm/>
                 <h1 className="font-semibold text-base pb-0">Edit Event</h1>
                 <Divider/>
-                {eventCard.map((card, index) => (
-                    <div id={`card-${card.eventId}`} key={index}>
+                {eventCard.map((card) => (
+                    <div id={`card-${card.eventId}`} key={card.eventId}>
                     <CustomCardEdit
                         id={card.eventId}
                         title={card.eventName}

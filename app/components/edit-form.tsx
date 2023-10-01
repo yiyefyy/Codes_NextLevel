@@ -23,6 +23,7 @@ export default function EditForm({eventId}: {eventId: number}) {
   const [type, setType] = useState("")
 
   const saveChanges = async () => {
+    handleChange
     try {
       const updatedEvent = await updateEvent(formData, `${eventId}`);
       console.log('Event updated successfully:', updatedEvent);
@@ -39,15 +40,19 @@ export default function EditForm({eventId}: {eventId: number}) {
       ...prevData,
       [name]: value,
       ["eventType"]: type,
-      ["date"]: date as Date
+      ["date"]: date as Date,
     }));
   };
 
   useEffect(() => {
+    const newDate = date as Date;
+    const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+    const oneDayAfter = new Date(newDate.getTime()+ oneDayInMilliseconds)
+
     setFormData((prevData) => ({
       ...prevData,
       ["eventType"]: type,
-      ["date"]: date as Date
+      ["date"]: oneDayAfter
     }));
     console.log("use effect called")
   }, [date, type])
@@ -130,26 +135,12 @@ export default function EditForm({eventId}: {eventId: number}) {
         <label className="block text-xs text-gray-600 uppercase">
           Date
         </label>
-        <DatePicker
-          className="mt-1 block w-full appearance-none  placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
-          id="date"
-          value={date}
-          enableClear={false}
-          onValueChange={setDate}
-        />
-      </div>
-      <div>
-        <label
-          className="block text-xs text-gray-600 uppercase"
-        >
-          Capacity
-        </label>
-        <NumberInput
-          id="capacity"
-          name="capacity"
-          value={formData.capacity}
-          onChange={handleChange}
-          min={0}
+        <DatePicker 
+            className="mt-1 block w-full appearance-none  placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+            id="date"
+            value={date}
+            enableClear={false}
+            onValueChange={setDate}
         />
       </div>
 

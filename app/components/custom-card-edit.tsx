@@ -5,7 +5,7 @@ import EditForm from './edit-form';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useEffect } from 'react';
-import { updateEvent, changeEventStatus } from "../../pages/api/eventApis";
+import { updateEvent, changeEventStatus, fetchAllEvents } from "../../pages/api/eventApis";
 
 interface CustomCardProps {
   id: number,
@@ -29,9 +29,19 @@ function CustomCardEdit({
   signUps,
   style = {}
 }: CustomCardProps) {
+
   const [cardStatus, setCardStatus] = useState(status);
   const [showEditDetails, setShowEditDetails] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [form, setForm] = useState({
+    eventName: "",
+    eventType: "",
+    description: "",
+    date: new Date(),
+    capacity: parseFloat(""),
+    status:"",
+    image: ""
+  });
 
   const statusClass =
     cardStatus === 'Closed'
@@ -60,34 +70,36 @@ function CustomCardEdit({
     setShowEditDetails(false)
   }
 
-  const handleSwitch = async (e: any) => {
-    console.log(id)
-      setCardStatus("Closed")
-      try {
-        console.log(id)
-        const status = await changeEventStatus(`${id}`, "Closed")
-        console.log('Event updated successfully:', status);
-      } catch (err) {
+  useEffect(() => {
+    setForm((prevData) => ({
+      ...prevData,
+      ["status"]:cardStatus
+    }));
+    console.log("use effect called")
+  }, [cardStatus])
 
-      }
+  const handleSwitch = async (e: any) => {
     e.preventDefault();
     if (e.target.checked) {
       setCardStatus("Open")
+      form.status = "Open";
+      console.log(form.status)
       try {
-        const status = await changeEventStatus(`${id}`, cardStatus)
+        const status = await updateEvent(form, `${id}`)
         console.log('Event updated successfully:', status);
       } catch (err) {
-
+        console.error('Error updating event:', err);
       }
     } else {
       console.log(id)
       setCardStatus("Closed")
+      form.status = "Closed";
       try {
         console.log(id)
-        const status = await changeEventStatus(`${id}`, cardStatus)
+        const status = await updateEvent(form, `${id}`)
         console.log('Event updated successfully:', status);
       } catch (err) {
-
+        console.error('Error updating event:', err);
       }
     }
   }
@@ -102,8 +114,9 @@ function CustomCardEdit({
     setShowCancelModal(false);
     setShowEditDetails(false);
     setCardStatus("Cancelled");
+    form.status = cardStatus;
     try {
-      const status = await changeEventStatus(`${id}`, cardStatus)
+      const status = await updateEvent(form, `${id}`)
       console.log('Event updated successfully:', status);
     } catch (err) {
 

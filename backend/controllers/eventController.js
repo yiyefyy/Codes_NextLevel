@@ -141,7 +141,7 @@ const updateEvent = async (req, res, next) => {
             return;
         }
 
-        const { eventName, eventType, description, date, capacity, image } = req.body;
+        const { eventName, eventType, description, date, capacity, status, image } = req.body;
 
         if (eventName && typeof eventName == 'string') {
             event.eventName = eventName;
@@ -161,6 +161,10 @@ const updateEvent = async (req, res, next) => {
 
         if (capacity && typeof capacity == "number") {
             event.capacity = capacity;
+        }
+
+        if (status && typeof status == "string") {
+            event.status = status;
         }
 
         if (image && typeof image == 'string') {

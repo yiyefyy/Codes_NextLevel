@@ -13,12 +13,13 @@ export interface Event {
   image: string
 }
 
-export interface updateEvent {
+export interface updateEvents {
   eventName: string,
   eventType: string,
   description: string,
   date: Date,
   capacity: number,
+  status: string;
   image: string
 }
 
@@ -51,8 +52,10 @@ export async function fetchEvent(eventId: string): Promise<Event> {
 export async function changeEventStatus(eventId: string, status: string): Promise<void> {
   const requestOptions = {
     method: "PUT",
+    mode: 'cors',
     headers: {
-      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(status)
   };
@@ -60,7 +63,7 @@ export async function changeEventStatus(eventId: string, status: string): Promis
   return fetchData(add_api, requestOptions)
 }
 
-export async function updateEvent(event: updateEvent, eventId: string): Promise<updateEvent> {
+export async function updateEvent(event: updateEvents, eventId: string): Promise<updateEvents> {
   const requestOptions = {
     method: "PUT",
     headers: {
