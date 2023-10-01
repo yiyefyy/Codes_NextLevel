@@ -77,7 +77,7 @@ export async function signUpEvent(signup: Signup): Promise<Signup> {
 }
 
 export async function deleteEvent(eventId: string): Promise<void> {
-  const deleteEventsApi = `${EVENTS_API}/${eventId}`
+  const deleteEventsApi = `${EVENTS_API}/delete/${eventId}`
   const requestOptions = {
     method: "DELETE"
   };
