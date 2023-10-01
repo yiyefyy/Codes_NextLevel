@@ -7,7 +7,7 @@ import {
   TableCell,
   Text
 } from '@tremor/react';
-import { User } from '../pages/api/userApi';
+import { User } from '../pages/api/interfaces';
 
 export default function UsersTable({ users }: { users: User[] }) {
   return (
