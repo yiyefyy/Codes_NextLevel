@@ -1,4 +1,6 @@
-![Next Level](NextLevel-Logo.png)
+<div align="center">
+  ![Next Level](NextLevel-Logo.png)
+</div>
 
 <div align="center"><strong>Next Level</strong></div>
 <div align="center">Bring your PSA experience to the next level</div>
@@ -30,7 +32,6 @@ Then, run these commands to start the database server (which is hosted on http:/
 cd backend 
 npm install 
 npm start
-
 ```
 
 Finally, run the following commands to start the development server:

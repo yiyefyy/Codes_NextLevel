@@ -43,7 +43,7 @@ export default async function ManageEmployees({
         </button>
       </div>
       <Text>
-        View and manage the users of XXX here 
+        View and manage the users of Next Level here 
       </Text>
       <Search />
       <Card className="mt-6">
