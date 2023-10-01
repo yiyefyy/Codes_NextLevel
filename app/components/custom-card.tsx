@@ -29,10 +29,13 @@ function CustomCard({
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedback, setFeedback] = useState({
-    rating: 0,
+    rating: 1,
     comment: ''
   });
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isEditingFeedback, setIsEditingFeedback] = useState(false);
+  const [originalFeedback, setOriginalFeedback] = useState(feedback);
 
   const statusClass =
     cardStatus === 'Registered'
@@ -88,7 +91,15 @@ function CustomCard({
   };
 
   const handleFeedbackCancelSubmit = () => {
-    setShowFeedbackModal(false);
+    setIsEditingFeedback(false);
+  };
+
+  const handleViewFeedback = () => {
+    setShowFeedback(true);
+  };
+
+  const handleCloseFeedback = () => {
+    setShowFeedback(false);
   };
 
   return (
@@ -152,7 +163,9 @@ function CustomCard({
           ) : cardStatus === 'Registered' && cardDate < currentDate ? (
             <>
               {feedbackSubmitted ? (
-                <CustomButton>View Feedback</CustomButton>
+                <CustomButton onClick={handleViewFeedback}>
+                  View Feedback
+                </CustomButton>
               ) : (
                 <CustomButton primary onClick={handleLeaveFeedback}>
                   Leave Feedback
@@ -160,12 +173,17 @@ function CustomCard({
               )}
               {showFeedbackModal && (
                 <div className="fixed inset-0 flex items-center justify-center z-50">
-                  <div className="bg-white p-4 rounded shadow-md">
+                  <div className="bg-white p-4 rounded shadow-md w-80">
                     <p className="flex text-xl font-semibold">Feedback</p>
-                    <div className="mt-4 flex">
-                      <label htmlFor="rating" className="mr-4">
-                        Rating:
+
+                    <div className="mt-4 mb-4 flex items-center">
+                      <label
+                        htmlFor="rating"
+                        className="block text-xs text-gray-600 uppercase mr-4"
+                      >
+                        Rating
                       </label>
+
                       <select
                         id="rating"
                         value={feedback.rating}
@@ -183,9 +201,12 @@ function CustomCard({
                         <option value="5">5</option>
                       </select>
                     </div>
-                    <div className="mb-4 justify-center items-center">
-                      <label htmlFor="comment" className="mr-4">
-                        Comment:
+                    <div className="mb-4">
+                      <label
+                        htmlFor="comment"
+                        className="block text-xs text-gray-600 uppercase mr-4 flex"
+                      >
+                        Comment
                       </label>
                       <textarea
                         id="comment"
@@ -193,6 +214,8 @@ function CustomCard({
                         onChange={(e) =>
                           setFeedback({ ...feedback, comment: e.target.value })
                         }
+                        rows={2}
+                        className="mt-2 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
                       ></textarea>
                     </div>
                     <div className="flex justify-end">
@@ -201,6 +224,40 @@ function CustomCard({
                       </CustomButton>
                       <CustomButton onClick={handleFeedbackSubmit}>
                         Submit
+                      </CustomButton>
+                    </div>
+                  </div>
+                </div>
+              )}{' '}
+              {showFeedback && (
+                <div className="fixed inset-0 flex items-center justify-center z-50">
+                  <div className="bg-white p-4 rounded shadow-md w-80">
+                    <p className="flex text-xl font-semibold">Feedback</p>
+
+                    <div className="mt-4 mb-4 items-center">
+                      <label
+                        htmlFor="rating"
+                        className="block text-xs text-gray-600 uppercase flex"
+                      >
+                        Rating
+                      </label>
+
+                      <div className="flex">{feedback.rating}</div>
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        htmlFor="comment"
+                        className="block text-xs text-gray-600 uppercase flex"
+                      >
+                        Comment
+                      </label>
+                      <div className="text-left w-70 break-words">
+                        {feedback.comment}
+                      </div>
+                    </div>
+                    <div className="flex justify-end">
+                      <CustomButton onClick={handleCloseFeedback}>
+                        Close
                       </CustomButton>
                     </div>
                   </div>
