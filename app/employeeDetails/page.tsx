@@ -92,6 +92,7 @@ async function EmployeeDetails(id : any) {
           index="name"
           categories={["Number of sign ups"]}
         />
+
       </div>
 
       <div className="ml-5 flex flex-col"> 
