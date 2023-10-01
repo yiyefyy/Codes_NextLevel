@@ -64,7 +64,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
         }
       })
     } catch (error : any) {
-      toast.error(error.message);
+      console.log(error);
     }
   }
 
@@ -79,7 +79,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
         })
 
     } catch (error : any) {
-      toast.error(error.message);
+      console.log(error);
     }
   };
 

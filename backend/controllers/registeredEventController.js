@@ -49,12 +49,9 @@ const registerForEvent = async (req, res, next) => {
             return;
         }
 
-        // const status = "registered";
-
         await RegisteredEvents.create( {
             userId,
             eventId,
-            // status
         });
 
         event.increment('signUps');

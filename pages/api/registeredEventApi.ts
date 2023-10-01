@@ -24,7 +24,7 @@ export async function registerForEvent(userId: string, eventId: string): Promise
 export async function checkHasRegistered(userId: string, eventId: string) : Promise<Boolean> {
   try {
     const events = await getRegisteredEvents(userId);
-    return events.some((item) => `${item.eventId}` === eventId);
+    return events.some((item) => `${item.eventId}` == eventId);
   } catch (err) {
     return false;
   }
