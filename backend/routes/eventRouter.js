@@ -5,14 +5,16 @@ const eventRouter = express.Router();
 
 eventRouter.post("/add", eventController.addEvent);
 
-eventRouter.post("/signup", eventController.signupForEvent);
+eventRouter.put("/signup", eventController.signupForEvent);
 
-eventRouter.post("/update/:eventId", eventController.updateEvent);
+eventRouter.put("/update/:eventId", eventController.updateEvent);
 
-eventRouter.post("/status/:eventId", eventController.updateEventStatus);
+eventRouter.put("/status/:eventId", eventController.updateEventStatus);
 
 eventRouter.get("/", eventController.getAllEvents)
 
 eventRouter.get("/:eventId", eventController.getEventById)
+
+eventRouter.delete("/delete/:eventId", eventController.deleteEvent)
 
 module.exports = eventRouter;

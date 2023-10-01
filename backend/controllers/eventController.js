@@ -1,5 +1,5 @@
 const { Users, Events, RegisteredEvents } = require('../models');
-const { Op, INTEGER } = require('sequelize');
+const { Op } = require('sequelize');
 
 const addEvent = async (req, res, next) => {
     try {
@@ -112,13 +112,9 @@ const signupForEvent = async (req, res, next) => {
         await RegisteredEvents.create({
             userId: userId,
             eventId: eventId,
+            status: "upcoming"
         });
 
-        if (event.signUps == event.capacity) {
-            event.status = 'closed';
-            await event.save();
-            return res.status(400).json({ error: 'Event is at full capacity' });
-        }
 
         event.increment('signUps');
 
@@ -127,6 +123,7 @@ const signupForEvent = async (req, res, next) => {
             await event.save();
             return res.status(400).json({ error: 'Event is at full capacity' });
         }
+
         await event.save();
         res.status(200).json({ message: 'Signed up for the event successfully', event });
     } catch (err) {
@@ -150,7 +147,7 @@ const updateEvent = async (req, res, next) => {
             event.eventName = eventName;
         }
 
-        if (eventType && typeof eventType == ' string') {
+        if (eventType && typeof eventType == 'string') {
             event.eventType = eventType;
         }
 
@@ -177,6 +174,24 @@ const updateEvent = async (req, res, next) => {
     }
 }
 
+const deleteEvent = async (req, res, next) => {
+    try {
+        const id = req.params.eventId;
+        const event = await Events.findByPk(id);
+
+        if (!event) {
+            res.status(404).json({ error: "Event does not exist!" });
+            return;
+        }
+
+        await Events.destroy({where: {eventId: id}})
+        res.sendStatus(204)
+
+    } catch (err) {
+        next(err)
+    }
+}
+
 
 module.exports = {
     addEvent,
@@ -184,5 +199,6 @@ module.exports = {
     getEventById,
     signupForEvent,
     updateEventStatus,
-    updateEvent
+    updateEvent,
+    deleteEvent
 }
