@@ -11,7 +11,7 @@ userRouter.get("/", userController.getAllUsers)
 
 userRouter.get("/:userId", userController.getUserById)
 
-userRouter.put("/:userId", userController.updateUser);
+userRouter.put("/:userId", userController.updateUserPassword);
 
 userRouter.delete("/:userId", userController.deleteUser);
 

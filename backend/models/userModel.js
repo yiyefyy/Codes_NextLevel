@@ -2,27 +2,43 @@ module.exports = (sequelize, DataTypes) => {
     const Users = sequelize.define("Users", {
         userId: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             primaryKey: true
+        },
+        firstName: {
+            type: DataTypes.STRING,
+            allowNULL: false,
+        },
+        lastName: {
+            type: DataTypes.STRING,
+            allowNULL: false,
         },
         email: {
             type: DataTypes.STRING,
             allowNULL: false,
-            unique: true,
+            unique:true,
         },
-        username: {
+        department: {
             type: DataTypes.STRING,
             allowNULL: false,
-            unique: true,
+        },
+        designation: {
+            type: DataTypes.STRING,
+            allowNULL: false,
         },
         password: {
             type: DataTypes.STRING,
             allowNULL: false,
         },
-        name: {
-            type: DataTypes.STRING,
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
         }
     })
+
+    Users.associate = (models) => {
+        Users.belongsToMany(models.Events, { through: models.RegisteredEvents, foreignKey: 'userId' });
+        Users.belongsToMany(models.Events, { through: models.Feedbacks, foreignKey: 'userId' });
+    }
 
     return Users;
 }

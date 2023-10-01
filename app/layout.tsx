@@ -3,13 +3,14 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
-import { Col } from '@tremor/react';
 import Sidebar from './sidebar';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../pages/api/auth/[...nextauth]';
 
 export const metadata = {
-  title: 'Next.js 13 + PlanetScale + NextAuth + Tailwind CSS',
+  title: 'Next Level - PSA',
   description:
-    'A user admin dashboard configured with Next.js, PlanetScale, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.'
+    '(Some description).'
 };
 
 export default async function RootLayout({
@@ -17,6 +18,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en" className="h-full bg-gray-50 overflow-hidden">
       <body className="h-full">
@@ -27,9 +30,16 @@ export default async function RootLayout({
         </div>
         <div className="flex h-full">
           <div className="overflow-hidden">
-            <Sidebar />
+            { session?.user ? (
+              <Sidebar isAdmin={session?.user.isAdmin}/>
+            ) :
+              <></>
+            }
           </div>
-          <div className="flex-1 overflow-y-auto">{children}</div>
+          <div className="flex-1 overflow-y-auto">
+            {' '}
+            {children}
+          </div>
         </div>
         <Analytics />
       </body>
