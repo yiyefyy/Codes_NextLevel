@@ -97,7 +97,7 @@ const signupForEvent = async (req, res, next) => {
             return res.status(404).json({ error: 'User or event not found' });
         }
 
-        if (event.status != "open") {
+        if (event.status != "Open") {
             return res.status(400).json({error: "Event is not available!"})
         }
 
@@ -119,7 +119,7 @@ const signupForEvent = async (req, res, next) => {
         event.increment('signUps');
 
         if (event.signUps == event.capacity) {
-            event.status = 'closed';
+            event.status = 'Closed';
             await event.save();
             return res.status(400).json({ error: 'Event is at full capacity' });
         }

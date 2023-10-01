@@ -3,8 +3,8 @@ const REGISTERED_EVENT_API = 'http://localhost:8000/registeredevents'
 
 export interface RegisteredEvent {
     status: String,
-    eventId: Number,
-    userId: Number
+    eventId: number,
+    userId: number
   }
 
 export async function getRegisteredEvents(userId: string): Promise<RegisteredEvent[]> {

@@ -57,7 +57,7 @@ const registerForEvent = async (req, res, next) => {
         event.increment('signUps');
 
         if (event.signUps == event.capacity) {
-            event.status = 'closed';
+            event.status = 'Closed';
             await event.save();
             return res.status(400).json({ error: 'Event is at full capacity' });
         }
@@ -102,7 +102,7 @@ const deregisterFromEvent = async (req, res, next) => {
         event.signUps -= 1;
 
         if (event.signUps < event.capacity) {
-            event.status = 'open';
+            event.status = 'Open';
             await event.save();
             return res.status(200).json({ res: event });
         }

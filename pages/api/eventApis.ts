@@ -13,6 +13,15 @@ export interface Event {
   image: string
 }
 
+export interface updateEvent {
+  eventName: string,
+  eventType: string,
+  description: string,
+  date: Date,
+  capacity: number,
+  image: string
+}
+
 export interface Signup {
   userId: number,
   eventId: number
@@ -39,19 +48,19 @@ export async function fetchEvent(eventId: string): Promise<Event> {
   return fetchData(fetchEventApi)
 }
 
-export async function changeEventStatus(eventId: string): Promise<void> {
+export async function changeEventStatus(eventId: string, status: string): Promise<void> {
   const requestOptions = {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(eventId)
+    body: JSON.stringify(status)
   };
   const add_api = `${EVENTS_API}/status/${eventId}`
   return fetchData(add_api, requestOptions)
 }
 
-export async function updateEvent(event: Event): Promise<Event> {
+export async function updateEvent(event: updateEvent, eventId: string): Promise<updateEvent> {
   const requestOptions = {
     method: "PUT",
     headers: {
@@ -59,7 +68,7 @@ export async function updateEvent(event: Event): Promise<Event> {
     },
     body: JSON.stringify(event)
   };
-  const add_api = `${EVENTS_API}/update/${event.eventId}`
+  const add_api = `${EVENTS_API}/update/${eventId}`
   return fetchData(add_api, requestOptions)
 }
 

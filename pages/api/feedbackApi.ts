@@ -2,10 +2,10 @@ import { fetchData } from "./utils";
 const FEEDBACK_API = 'http://localhost:8000/feedbacks'
 
 export interface Feedback {
-    rating: Number,
+    rating: number,
     comment: String,
-    eventId: Number,
-    userId: Number
+    eventId: number,
+    userId: number
   }
 
 export async function createFeedback(feedback: Feedback): Promise<Feedback> {
@@ -21,7 +21,7 @@ export async function createFeedback(feedback: Feedback): Promise<Feedback> {
 }
 
 
-export async function getFeedbacks(eventId: string): Promise<Feedback[]> {
+export async function getFeedbacks(eventId: number): Promise<Feedback[]> {
   const getFeedbackApi = `${FEEDBACK_API}/${eventId}`
   return fetchData(getFeedbackApi);
 }
