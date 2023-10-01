@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import LoadingDots from "./loading-dots";
-import { Select, SelectItem, DatePicker, NumberInput } from "@tremor/react";
+import { Select, SelectItem, DatePicker, NumberInput, DatePickerValue } from "@tremor/react";
 import { useEffect } from "react";
 
 export default function EventForm() {
@@ -16,16 +16,17 @@ export default function EventForm() {
     status:"Open"
   });
 
-  const [date, setDate] = useState(new Date())
+  const [date, setDate] = useState<DatePickerValue>(new Date());
   const [type, setType] = useState("")
 
-  const handleChange = (e) => {
+
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
       ["eventType"]: type,
-      ["date"]: date
+      ["date"]: date as Date
     }));
   };
 
@@ -33,9 +34,8 @@ export default function EventForm() {
       setFormData((prevData) => ({
           ...prevData,
           ["eventType"]: type,
-          ["date"]: date
+          ["date"]: date as Date
         }));
-      console.log("use effect called")
   }, [date, type])
 
    return (

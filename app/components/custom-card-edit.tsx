@@ -48,7 +48,6 @@ function CustomCardEdit({
             ? 'amber'
             : 'teal';
 
-
   const handleEditClick = () => {
     setShowEditDetails(true)
   };
@@ -57,7 +56,7 @@ function CustomCardEdit({
       setShowEditDetails(false)
   }
 
-  const handleSwitch = (e) => {
+  const handleSwitch = (e: any) => {
       if (e.target.checked) {
           setCardStatus("Open")
       } else {

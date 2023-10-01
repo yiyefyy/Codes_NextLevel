@@ -1,4 +1,4 @@
-const { Users, RegisteredEvents } = require('../models');
+const { Users, RegisteredEvents, Events } = require('../models');
 
 const getRegisteredEventsByUserId = async (req, res, next) => {
     try {
@@ -14,11 +14,107 @@ const getRegisteredEventsByUserId = async (req, res, next) => {
             where: {userId}
         });
 
-        res.status(200).json({ res: registeredEventList})
+        const eventIds = registeredEventList.map((registeredEvent) => registeredEvent.eventId);
+        const eventList = await Events.findAll({
+            where: { eventId: eventIds }, 
+        });
+        res.status(200).json({ res: eventList})
 
     } catch (err) {
         next(err)
     }
 }
 
-module.exports = {getRegisteredEventsByUserId};
+const registerForEvent = async (req, res, next) => {
+    try {
+        const userId = req.params.userId
+        const { eventId} = req.body;
+        const event = await Events.findByPk(eventId);
+        const user = await Users.findByPk(userId);
+
+        if(!event || !user) {
+            res.status(404).json({ error: "User or event not found!" });
+            return;
+        }
+
+        const registeredEvent = await RegisteredEvents.findOne({
+            where: { userId, eventId },
+        });
+
+        if (registeredEvent) {
+            res.status(400).json({ error: "User has already registered for this" });
+            return;
+        }
+
+        const status = "upcoming";
+
+        const newEvent = await RegisteredEvents.create( {
+            userId,
+            eventId,
+            status
+        });
+
+        event.increment('signUps');
+
+        if (event.signUps == event.capacity) {
+            event.status = 'closed';
+            await event.save();
+            return res.status(400).json({ error: 'Event is at full capacity' });
+        }
+
+        
+        res.status(200).json({ res: newEvent});
+
+    } catch (err) {
+        next(err);
+    }
+}
+
+const deregisterFromEvent = async (req, res, next) => {
+    try {
+        const userId = req.params.userId
+        const { eventId} = req.body;
+        const event = await Events.findByPk(eventId);
+        const user = await Users.findByPk(userId);
+
+        if(!event || !user) {
+            res.status(404).json({ error: "User or event not found!" });
+            return;
+        }
+
+        const registeredEvent = await RegisteredEvents.findOne({
+            where: { userId, eventId },
+        });
+
+        if (!registeredEvent) {
+            res.status(404).json({ error: "User has not registered for this" });
+            return;
+        }
+        const currDate = new Date()
+
+        if (event.date <= currDate) {
+            res.status(404).json({ error: "Event has passed!" });
+            return;
+        }
+
+        await RegisteredEvents.destroy({where: {userId, eventId}});
+
+        event.signUps -= 1;
+
+        if (event.signUps < event.capacity) {
+            event.status = 'open';
+            await event.save();
+            return res.status(200).json({ res: event });
+        }
+
+        res.sendStatus(204);
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports = {
+    getRegisteredEventsByUserId,
+    registerForEvent,
+    deregisterFromEvent
+};
