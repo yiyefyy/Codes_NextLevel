@@ -92,10 +92,7 @@ export default function LoginForm() {
         )}
       </button>
       <p className="text-center text-sm text-gray-600">
-        For admins: Add new employees 
-        <Link href="/register" className="font-semibold text-gray-800">
-         {" "}here
-        </Link>
+        New to PSA? Contact your admin to create account.
       </p>
     </form>
     </>
