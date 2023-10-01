@@ -4,7 +4,6 @@ import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
 import { Suspense } from 'react';
 import Sidebar from './sidebar';
-import { EventProvider } from './data/EventProvider';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../pages/api/auth/[...nextauth]';
 
@@ -39,7 +38,7 @@ export default async function RootLayout({
           </div>
           <div className="flex-1 overflow-y-auto">
             {' '}
-            <EventProvider>{children}</EventProvider>
+            {children}
           </div>
         </div>
         <Analytics />
