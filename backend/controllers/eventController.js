@@ -147,7 +147,7 @@ const updateEvent = async (req, res, next) => {
             event.eventName = eventName;
         }
 
-        if (eventType && typeof eventType == ' string') {
+        if (eventType && typeof eventType == 'string') {
             event.eventType = eventType;
         }
 
