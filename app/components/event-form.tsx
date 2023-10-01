@@ -19,11 +19,8 @@ export default function EventForm() {
     status:"Open",
     image: ""
   });
-
-
   const [date, setDate] = useState<DatePickerValue>(new Date());
   const [type, setType] = useState("")
-
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -50,7 +47,6 @@ export default function EventForm() {
           ["eventType"]: type,
           ["date"]: date as Date
         }));
-      console.log("use effect called")
   }, [date, type])
 
    return (
