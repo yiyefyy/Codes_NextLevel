@@ -1,6 +1,7 @@
 import React, { CSSProperties, useEffect, useState } from 'react';
 import CustomButton from './custom-button';
 import { createFeedback, getFeedbackByUser } from '../../pages/api/feedbackApi';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface CustomCardProps {
   employeeId: Number,
@@ -35,10 +36,7 @@ function CustomCard({
     rating: 1,
     comment: ''
   });
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [isEditingFeedback, setIsEditingFeedback] = useState(false);
-  const [originalFeedback, setOriginalFeedback] = useState(feedback);
 
   const statusClass =
     cardStatus.toUpperCase() === 'REGISTERED'
@@ -95,15 +93,16 @@ function CustomCard({
   const handleFeedbackSubmit = async () => {
     try {
       await createFeedback(`${employeeId}`, `${eventId}`, feedback.rating, feedback.comment);
-      setFeedbackSubmitted(true);
+      setCardStatus("Reviewed");
       setShowFeedbackModal(false);
-    } catch (err) {
-      console.log(err);
+      toast.success("Thank you for your feedback!")
+    } catch (err : any) {
+      toast.error(err.message)
     }
   };
 
   const handleFeedbackCancelSubmit = () => {
-    setIsEditingFeedback(false);
+    setShowFeedbackModal(false);
   };
 
   const handleCloseFeedback = () => {
@@ -113,15 +112,19 @@ function CustomCard({
   const handleViewFeedback = async () => {
     try {
       const data = await getFeedbackByUser(`${employeeId}`, `${eventId}`);
+      setFeedback({
+        rating: data.rating, 
+        comment :data.comment
+      });
       setShowFeedback(true);
-      console.log(data);
-    } catch (err) {
-      console.log(err);
+    } catch (err : any) {
+      toast.error(err.message);
     }
   }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4" style={style}>
+      <Toaster/>
       <h2 className="text-xl font-semibold">{title}</h2>
       <p className="text-gray-600 mt-2">{description}</p>
       <p className="text-sm text-gray-500 mt-2">{date}</p>

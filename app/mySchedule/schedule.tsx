@@ -5,7 +5,7 @@ import { Event } from '../../pages/api/interfaces';
 import { checkHasRegistered, deregisterFromEvent, getRegisteredEvents } from '../../pages/api/registeredEventApi';
 import Loading from '../loading';
 import toast from 'react-hot-toast';
-import { checkHasFeedback, getFeedbackByUser } from '../../pages/api/feedbackApi';
+import { checkHasFeedback } from '../../pages/api/feedbackApi';
 
 export default function Schedule({userId} : {userId: Number}) {
   const [eventData, setEventData] = useState<Event[]>([]);

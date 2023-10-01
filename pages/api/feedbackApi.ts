@@ -15,14 +15,14 @@ export async function createFeedback(userId: string, eventId: string, rating: nu
     return fetchData(create_api, requestOptions)
 }
 
-export async function getFeedbackByUser(userId: string, eventId: string): Promise<Feedback[]> {
+export async function getFeedbackByUser(userId: string, eventId: string): Promise<Feedback> {
   const getFeedbackApi = `${FEEDBACK_API}/user/${userId}/event/${eventId}`
   return fetchData(getFeedbackApi);
 }
 
 export async function checkHasFeedback(userId: string, eventId: string): Promise<Boolean> {
   const data = await getFeedbackByUser(userId, eventId);
-  return data == null;
+  return data != null;
 }
 
 export async function getFeedbacks(eventId: string): Promise<Feedback[]> {
