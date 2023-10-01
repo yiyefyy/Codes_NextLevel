@@ -6,4 +6,3 @@ export async function fetchData(api: string, requestOptions = {}): Promise<any> 
     }
     return results.res
   }
-  
