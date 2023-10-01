@@ -1,5 +1,5 @@
 <div align="center">
-  ![Next Level](NextLevel-Logo.png)
+  <img src="NextLevel-Logo.png" alt="Next Level">
 </div>
 
 <div align="center"><strong>Next Level</strong></div>
