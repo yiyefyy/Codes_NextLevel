@@ -1,22 +1,29 @@
+"use client";
+
 import Image from "next/image";
-import AddEmployeeForm from "../components/addEmployeeForm";
+import AddUserForm from "../components/addUserForm";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../pages/api/auth/[...nextauth]";
-import Custom404 from "../pages/404";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useRouter } from "next/navigation";
+export default function addEmployee() {
 
-export default async function AddEmployee() {
-  const session = await getServerSession(authOptions);
-  
-  if (!session?.user || !session?.user.isAdmin) {
-    return <Custom404/>
+  const router = useRouter()
+
+  const handleBackClick = () => {
+      router.push("/manageEmployees")
   }
-
+      
   return (
     <main className="flex h-screen justify-center bg-gray-100">
-        <div className="w-screen items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16">
-        <AddEmployeeForm/>
+      <button className="absolute left-60 top-20 m-4" onClick={handleBackClick}>
+        <ArrowBackIosNewIcon/>
+      </button>
+      <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
+        <div className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 bg-white px-4 py-6 pt-8 text-center sm:px-16">
+          <h3 className="text-xl font-semibold">Add User</h3>
         </div>
+        <AddUserForm/>
+      </div>
     </main>
   );
 }

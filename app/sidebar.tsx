@@ -8,7 +8,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', user: true, admin: true },
   { name: 'My Schedule', href: '/mySchedule', user: true, admin: false },
   { name: 'Manage Events', href: '/manageEvents', user: false, admin:true },
-  { name: 'Manage Employees', href: '/addEmployee', user: false, admin:true }
+  { name: 'Manage Employees', href: '/manageEmployees', user: false, admin: true}
 ];
 
 function classNames(...classes: string[]) {

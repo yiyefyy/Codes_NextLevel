@@ -61,7 +61,6 @@ function CustomCardEdit({
         ? 'amber'
         : 'teal';
 
-
   const handleEditClick = () => {
     setShowEditDetails(true)
   };

@@ -3,6 +3,17 @@ import { Event } from "./interfaces";
 
 const EVENTS_API = 'http://localhost:8000/events';
 
+export interface NewEvent {
+  eventId: number,
+  eventName: string,
+  eventType: string,
+  description: string,
+  date: Date,
+  capacity: number,
+  signUps: number,
+  status: string,
+  image: string
+}
 export interface updateEvents {
   eventName: string,
   eventType: string,
@@ -18,7 +29,7 @@ export interface Signup {
   eventId: number
 }
 
-export async function createEvent(event: Event): Promise<Event> {
+export async function createEvent(event: NewEvent): Promise<NewEvent> {
   const requestOptions = {
     method: "POST",
     headers: {
