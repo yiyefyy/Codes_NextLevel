@@ -5,7 +5,8 @@ import AddUserForm from "../components/addUserForm";
 import Link from "next/link";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useRouter } from "next/router";
-export default function addEmployee() {
+
+export default function AddEmployee() {
 
   const router = useRouter()
 
