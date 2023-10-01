@@ -1,4 +1,5 @@
 import { fetchData } from "./utils";
+import {Event} from './eventApis';
 const REGISTERED_EVENT_API = 'http://localhost:8000/registeredevents'
 
 export interface RegisteredEvent {
@@ -7,7 +8,7 @@ export interface RegisteredEvent {
     userId: Number
   }
 
-export async function getRegisteredEvents(userId: string): Promise<RegisteredEvent[]> {
+export async function getRegisteredEvents(userId: string): Promise<Event[]> {
   const getEventsApi = `${REGISTERED_EVENT_API}/${userId}`
   return fetchData(getEventsApi);
 }
