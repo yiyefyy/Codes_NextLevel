@@ -114,7 +114,7 @@ export default function Schedule({userId} : {userId: Number}) {
               eventId={card.eventId}
               title={card.eventName}
               description={card.description}
-              date={`${card.date}`}
+              date={card.date.toString().split('T')[0]}
               status={card.status}
               onCancel={() => handleCardCancellation(card.eventId)}
               style={{ marginBottom: '16px' }}

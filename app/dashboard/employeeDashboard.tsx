@@ -142,7 +142,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
             eventId = {card.eventId}
             title={card.eventName}
             description={card.description}
-            date={`${card.date}`}
+            date={card.date.toString().split('T')[0]}
             status={card.status}
             style={{ marginBottom: '16px' }}
             onSignup={() => handleSignUpForEvent(card.eventId)}
