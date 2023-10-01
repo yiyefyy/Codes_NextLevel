@@ -75,6 +75,29 @@ const loginUser = async (req, res) => {
 
 }
 
+const updateUserPassword = async (req, res, next) => {
+    try {
+        const id = req.params.userId
+        const user = await Users.findByPk(id);
+        if (!user) {
+            res.status(404).json({error: "User does not exist"});
+            return;
+        }
+
+        const { password } = req.body;
+
+        if (password && typeof password == 'string') {
+            const hash = await bcrypt.hash(password, 10);
+            user.password = hash;
+        }
+
+        await user.save();
+        res.status(200).json({res: user});
+    } catch (err) {
+        next(err);
+    }
+}
+
 const getAllUsers = async (req, res, next) => {
     try {
         const userList = await Users.findAll();
@@ -118,6 +141,7 @@ module.exports = {
     addUser,
     loginUser,
     getAllUsers,
+    updateUserPassword,
     getUserById,
     deleteUser
 }

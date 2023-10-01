@@ -24,6 +24,18 @@ export async function createUser(user: User): Promise<User> {
   return fetchData(register_api, requestOptions)
 }
 
+export async function updateUserPassword(id: Number, password: String): Promise<User> {
+  const updateUserApi = `${USERS_API}/${id}`
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({"password" : password})
+  };
+  return fetchData(updateUserApi, requestOptions)
+}
+
 export async function fetchAllUsers(): Promise<User[]> {
   return fetchData(USERS_API);
 }

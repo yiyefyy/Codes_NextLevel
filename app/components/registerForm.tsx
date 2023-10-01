@@ -163,22 +163,6 @@ export default function RegisterForm() {
           className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
         />
       </div>
-      {/* <div>
-        <label
-          htmlFor="password"
-          className="block text-xs text-gray-600 uppercase"
-        >
-          Password
-        </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          onChange={e => handleChange(e, "password")} 
-          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
-        /> */}
-      {/* </div> */}
       <div className="flex space-x-4 justify-center items-center">
         <label
           htmlFor="isAdmin"
