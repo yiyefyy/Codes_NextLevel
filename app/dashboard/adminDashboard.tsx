@@ -38,9 +38,9 @@ export default function AdminDashboard() {
           })
         );
 
-          const sortedCards = eventRatings.sort((a, b) => b.value - a.value)
+          const sortedCards = (eventRatings.filter((event) => event.value !=0))
 
-          setRatedCards(sortedCards);
+          setRatedCards(sortedCards.sort((a, b) => b.value - a.value));
         
       } catch (error) {
         // Handle error
