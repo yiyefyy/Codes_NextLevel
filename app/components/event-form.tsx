@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import LoadingDots from "./loading-dots";
-import toast from "react-hot-toast";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Select, SelectItem, DatePicker, DatePickerValue } from "@tremor/react";
+import { Select, SelectItem, DatePicker, NumberInput } from "@tremor/react";
+import { useEffect } from "react";
 
 export default function EventForm() {
   const [loading, setLoading] = useState(false);
@@ -18,21 +16,37 @@ export default function EventForm() {
     status:"Open"
   });
 
+  const [date, setDate] = useState(new Date())
+  const [type, setType] = useState("")
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+      ["eventType"]: type,
+      ["date"]: date
     }));
   };
+
+  useEffect(() => {
+      setFormData((prevData) => ({
+          ...prevData,
+          ["eventType"]: type,
+          ["date"]: date
+        }));
+      console.log("use effect called")
+  }, [date, type])
 
    return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         setLoading(true);
+ 
         console.log(formData)
-        // TODO 
+        setLoading(false);
+
         }}
       className="flex flex-col space-y-4 bg-white px-2 pb-8 pt-2 sm:px-16"
     >
@@ -74,27 +88,26 @@ export default function EventForm() {
         >
           Type
         </label>
-        <Select value={formData.eventType} >
+        <Select value={type} onValueChange={setType}>
             <SelectItem value="Workshop">
-            Workshop
+                Workshop
             </SelectItem>
             <SelectItem value="Activity">
-            Activity
+                Activity
             </SelectItem>
         </Select>
       </div>
       <div>
-        <label
-          className="block text-xs text-gray-600 uppercase"
-        >
+        <label className="block text-xs text-gray-600 uppercase">
           Date
         </label>
         <DatePicker 
             className="mt-1 block w-full appearance-none  placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             id="date"
-            value={formData.date}
-            onChange={handleChange}
-        />;
+            value={date}
+            enableClear={false}
+            onValueChange={setDate}
+        />
       </div>
       <div>
         <label
@@ -102,14 +115,13 @@ export default function EventForm() {
         >
           Capacity
         </label>
-        <input
+        <NumberInput
           id="capacity"
           name="capacity"
-          type="number"
           value={formData.capacity}
           onChange={handleChange}
           required
-          className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+          min = {0}
         />
       </div>
       
@@ -128,7 +140,8 @@ export default function EventForm() {
         )}
       </button>
     
-     
+      
     </form>
+    
   );
 }
