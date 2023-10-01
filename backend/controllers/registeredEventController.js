@@ -14,7 +14,14 @@ const getRegisteredEventsByUserId = async (req, res, next) => {
             where: {userId}
         });
 
-        res.status(200).json({ res: registeredEventList})
+        const eventIdList = registeredEventList.map((registeredEvent) => registeredEvent.eventId);
+
+        // Fetch events using the eventIds
+        const eventList = await Events.findAll({
+            where: { eventId: eventIdList }
+        });
+
+        res.status(200).json({ res: eventList})
 
     } catch (err) {
         next(err)
@@ -42,16 +49,18 @@ const registerForEvent = async (req, res, next) => {
             return;
         }
 
-        const status = "upcoming";
+        // const status = "registered";
 
-        const newEvent = await RegisteredEvents.create( {
+        await RegisteredEvents.create( {
             userId,
             eventId,
-            status
+            // status
         });
 
+        const actualEvent = await Events.findOne({where : eventId});
+
         
-        res.status(200).json({ res: newEvent});
+        res.status(201).json({ res: actualEvent});
 
     } catch (err) {
         next(err);

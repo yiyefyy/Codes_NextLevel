@@ -4,9 +4,9 @@ const registeredEventRouter = express.Router();
 
 registeredEventRouter.get("/:userId", registeredEventController.getRegisteredEventsByUserId);
 
-registeredEventRouter.post("/:userId", registeredEventController.getRegisteredEventsByUserId);
+registeredEventRouter.post("/:userId", registeredEventController.registerForEvent);
 
-registeredEventRouter.delete("/:userId", registeredEventController.getRegisteredEventsByUserId);
+registeredEventRouter.delete("/:userId", registeredEventController.deregisterFromEvent);
 
 
 module.exports = registeredEventRouter

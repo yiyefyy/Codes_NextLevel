@@ -59,7 +59,7 @@ export const eventData = [
     type: 'Activity',
     description: 'Activity Activity',
     date: '2 Oct 2023',
-    status: 'Open',
+    status: 'Registered',
     image:
       'https://bestinsingapore.com/wp-content/uploads/2020/08/reformer-pilates-1569423354-1024x515.jpg'
   },
@@ -69,7 +69,7 @@ export const eventData = [
     type: 'Activity',
     description: 'Activity Activity',
     date: '2 Oct 2023',
-    status: 'Open'
+    status: 'Registered'
   },
   {
     id: 105,

@@ -1,8 +1,10 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import CustomCard from '../components/custom-card';
 import { eventData } from '../data/EventData';
 import { useEventContext } from '../data/EventProvider';
+import { getRegisteredEvents } from '../../pages/api/registeredEventApi';
+import Loading from '../loading';
 interface EventType {
   id: number;
   title: string;
@@ -13,14 +15,23 @@ interface EventType {
   image?: string;
 }
 
-export default function Schedule() {
+export default function Schedule({userId} : {userId: Number}) {
   const { eventData, addEventToUpcoming } = useEventContext();
-
   const [eventCards, setEventCards] = useState(eventData);
-
   const [currentTab, setCurrentTab] = useState('Upcoming');
+  const [loading, setLoading] = useState(false);
 
   const currentDate = new Date();
+
+  useEffect(() => {
+    fetchRegisteredEvents();
+    setLoading(false);
+  })
+
+  const fetchRegisteredEvents = async () => {
+    const data = await getRegisteredEvents(`${userId}`);
+    console.log(data);
+  }
 
   const filteredCards =
     currentTab === 'Upcoming'
@@ -43,6 +54,10 @@ export default function Schedule() {
 
     setEventCards(updatedEventCards);
   };
+
+  if (loading) {
+    return <Loading/>
+  }
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">

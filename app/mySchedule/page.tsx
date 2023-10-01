@@ -11,9 +11,9 @@ export default async function SchedulePage() {
   
   return (
     <main>
-      {session?.user && !session?.user.isAdmin ? (   // LOGGED IN AS ADMIN
-        <Schedule/>
-        ) : (   // NOT LOGGED IN
+      {session?.user && !session?.user.isAdmin ? (   
+        <Schedule userId = {session?.user.userId} />
+        ) : (  
         <Custom404/>
       )}
 
