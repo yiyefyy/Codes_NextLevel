@@ -1,8 +1,17 @@
 import Image from "next/image";
-import RegisterForm from "../components/registerForm";
+import AddEmployeeForm from "../components/addEmployeeForm";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../pages/api/auth/[...nextauth]";
+import Custom404 from "../pages/404";
 
-export default function Register() {
+export default async function AddEmployee() {
+  const session = await getServerSession(authOptions);
+  
+  if (!session?.user || !session?.user.isAdmin) {
+    return <Custom404/>
+  }
+
   return (
     <main className="flex h-screen items-center justify-center bg-gray-100">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
@@ -19,7 +28,7 @@ export default function Register() {
           </Link>
           <h3 className="text-xl font-semibold">Add Employee</h3>
         </div>
-        <RegisterForm/>
+        <AddEmployeeForm/>
       </div>
     </main>
   );

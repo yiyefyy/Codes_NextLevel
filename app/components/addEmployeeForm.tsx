@@ -9,7 +9,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ToggleButton from '@mui/material/ToggleButton';
 import Link from "next/link";
 
-export default function RegisterForm() {
+export default function AddEmployeeForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
