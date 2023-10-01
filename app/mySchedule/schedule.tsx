@@ -32,7 +32,6 @@ export default function Schedule({userId} : {userId: Number}) {
   const filteredCards =
     currentTab === 'Upcoming'
       ? eventData.filter((card: Event) => {
-        console.log(eventData);
           const cardDate = new Date(card.date);
           card.status = "Registered";
           return cardDate > currentDate;

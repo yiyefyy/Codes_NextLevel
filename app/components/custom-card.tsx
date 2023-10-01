@@ -9,7 +9,6 @@ interface CustomCardProps {
   description: string;
   date: string;
   status: string;
-  submittedFeedback: boolean;
   buttonDisabled?: boolean;
   style?: CSSProperties;
   onSignup?: () => void;
@@ -23,7 +22,6 @@ function CustomCard({
   description,
   date,
   status,
-  submittedFeedback, 
   buttonDisabled,
   style = {},
   onSignup,
@@ -37,7 +35,7 @@ function CustomCard({
     rating: 0,
     comment: ''
   });
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(submittedFeedback);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
   const statusClass =
     cardStatus === 'Registered'
@@ -92,7 +90,6 @@ function CustomCard({
   const handleFeedbackSubmit = async () => {
     try {
       await createFeedback(employeeId, eventId, feedback.rating, feedback.comment);
-      submittedFeedback = true;
       setFeedbackSubmitted(true);
       setShowFeedbackModal(false);
     } catch (err) {
