@@ -47,7 +47,7 @@ function CustomCard({
       ? 'text-orange-500'
       : cardStatus.toUpperCase() === 'OPEN'
       ? 'text-green-500'
-      : cardStatus.toUpperCase() === 'CANCELLED'
+      : cardStatus.toUpperCase() === 'CANCELLED' || cardStatus.toUpperCase() === 'CLOSED' 
       ? 'text-gray-500'
       : cardStatus.toUpperCase() === 'REVIEWED'
       ? 'text-orange-500'
