@@ -14,7 +14,7 @@ export const EventProvider = ({ children }) => {
 
   const removeEventFromUpcoming = (event) => {
     const updatedEvents = initialEventData.map((e) =>
-      e.id === event.id ? { ...e, status: 'Open' } : e
+      e.id === event.id && e.status == event.status ? { ...e, status: 'Open' } : e
     );
 
     setInitialEventData(updatedEvents);

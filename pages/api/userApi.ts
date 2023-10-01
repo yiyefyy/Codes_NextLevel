@@ -1,16 +1,6 @@
 import { fetchData } from "./utils";
+import { User } from "./interfaces";
 const USERS_API = 'http://localhost:8000/users'
-
-export interface User {
-    userId: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    department: string;
-    designation: string;
-    password: string;
-    isAdmin: string;
-  }
 
 export async function createUser(user: User): Promise<User> {
   const requestOptions = {

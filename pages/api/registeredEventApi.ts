@@ -1,19 +1,15 @@
 import { fetchData } from "./utils";
+import { Event } from "./interfaces";
+
 const REGISTERED_EVENT_API = 'http://localhost:8000/registeredevents'
 
-export interface RegisteredEvent {
-    status: String,
-    eventId: Number,
-    userId: Number
-  }
 
-export async function getRegisteredEvents(userId: string): Promise<RegisteredEvent[]> {
+export async function getRegisteredEvents(userId: string): Promise<Event[]> {
   const getEventsApi = `${REGISTERED_EVENT_API}/${userId}`
   return fetchData(getEventsApi);
 }
 
-// TODO: get user from token
-export async function registerForEvent(userId: string, eventId: string): Promise<RegisteredEvent[]> {
+export async function registerForEvent(userId: string, eventId: string): Promise<Event[]> {
     const getEventsApi = `${REGISTERED_EVENT_API}/${userId}`
     const requestOptions = {
       method: "POST",
@@ -32,7 +28,7 @@ export async function deregisterFromEvent(userId: string, eventId: string): Prom
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(eventId)
+      body: JSON.stringify({"eventId" : eventId})
     };
     const response = await fetch(getEventsApi, requestOptions)
     if (!response.ok) {

@@ -7,4 +7,6 @@ feedbackRouter.post("/feedback", feedbackController.addFeedback);
 
 feedbackRouter.get("/:eventId", feedbackController.getFeedbackByEventId);
 
+feedbackRouter.get("/:eventId", feedbackController.getUserFeedbackByEventId);
+
 module.exports = feedbackRouter;

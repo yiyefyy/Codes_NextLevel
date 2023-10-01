@@ -17,7 +17,7 @@ export default async function Dashboard() {
         session?.user.isAdmin ? (   // LOGGED IN AS ADMIN
         <AdminDashboard/>
         ) : (   // LOGGED IN AS REGULAR EMPLOYEE
-        <EmployeeDashboard/>
+        <EmployeeDashboard userId={session?.user.userId}/>
         )) : (   // NOT LOGGED IN
         <Custom404/>
       )}

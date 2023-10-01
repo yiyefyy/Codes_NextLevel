@@ -61,8 +61,32 @@ const getFeedbackByEventId = async (req, res, next) => {
     }
 }
 
+const getUserFeedbackByEventId = async (req, res, next) => {
+    try {
+        const eventId = req.params.eventId
+        const { userId } = req.body;
+        const event = await Events.findByPk(eventId);
+        const user = await Users.findByPk(userId);
+    
+        if (!event || !user) {
+            res.status(404).json({ error: "User or event does not exist!" });
+            return;
+        }
+
+        const feedback = await Feedbacks.findOne({
+            where: {eventId, userId}
+        });
+
+        res.status(200).json({ res: feedback})
+
+    } catch (err) {
+        next(err);
+    }
+}
+
 
 module.exports = {
     addFeedback,
-    getFeedbackByEventId
+    getFeedbackByEventId,
+    getUserFeedbackByEventId
 };

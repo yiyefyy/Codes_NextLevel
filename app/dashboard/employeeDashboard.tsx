@@ -15,7 +15,7 @@ interface EventType {
   image?: string;
 }
 
-export default function EmployeeDashboard() {
+export default function EmployeeDashboard({userId} : {userId: Number}) {
   const {
     eventData,
     addEventToUpcoming,
@@ -120,6 +120,8 @@ export default function EmployeeDashboard() {
       {filteredCards.map((card: EventType, index: number) => (
         <div id={`card-${card.id}`} key={index}>
           <CustomCard
+            employeeId={userId}
+            eventId = {card.id}
             title={card.title}
             description={card.description}
             date={card.date}

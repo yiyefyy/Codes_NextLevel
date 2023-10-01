@@ -1,58 +1,62 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomCard from '../components/custom-card';
-import { eventData } from '../data/EventData';
-import { useEventContext } from '../data/EventProvider';
-import { getRegisteredEvents } from '../../pages/api/registeredEventApi';
+import { Event } from '../../pages/api/interfaces';
+import { deregisterFromEvent, getRegisteredEvents } from '../../pages/api/registeredEventApi';
 import Loading from '../loading';
-interface EventType {
-  id: number;
-  title: string;
-  type: string;
-  description: string;
-  date: string;
-  status: string;
-  image?: string;
-}
+import toast from 'react-hot-toast';
 
 export default function Schedule({userId} : {userId: Number}) {
-  const { eventData, addEventToUpcoming } = useEventContext();
-  const [eventCards, setEventCards] = useState(eventData);
+  const [eventData, setEventData] = useState<Event[]>([]);
   const [currentTab, setCurrentTab] = useState('Upcoming');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const currentDate = new Date();
 
   useEffect(() => {
     fetchRegisteredEvents();
-    setLoading(false);
-  })
+  }, [loading]);
 
-  const fetchRegisteredEvents = async () => {
-    const data = await getRegisteredEvents(`${userId}`);
-    console.log(data);
+  async function fetchRegisteredEvents() {
+    setLoading(true);
+    try {
+      const data : Event[] = await getRegisteredEvents(`${userId}`);
+      setEventData(data);
+      setLoading(false);
+    } catch (error : any){
+      toast.error(error.message);
+      setLoading(false);
+    }
   }
 
   const filteredCards =
     currentTab === 'Upcoming'
-      ? eventCards.filter((card: EventType) => {
+      ? eventData.filter((card: Event) => {
+        console.log(eventData);
           const cardDate = new Date(card.date);
-          return card.status === 'Registered' && cardDate > currentDate;
+          card.status = "Registered";
+          return cardDate > currentDate;
         })
-      : eventCards.filter((card: EventType) => {
+      : eventData.filter((card: Event) => {
           const cardDate = new Date(card.date);
-          return card.status === 'Registered' && cardDate < currentDate;
+          card.status = "Attended";
+          return cardDate < currentDate;
         });
 
-  const handleCardCancellation = (cardId: number) => {
-    const updatedEventCards = eventCards.map((card: EventType) => {
-      if (card.id === cardId) {
-        return { ...card, status: 'Cancelled' };
-      }
-      return card;
-    });
-
-    setEventCards(updatedEventCards);
+  const handleCardCancellation = async (cardId: number) => {
+    try {
+      await deregisterFromEvent(`${userId}`, `${cardId}`);
+      const updatedEventCards = eventData.map((card: Event) => {
+        if (card.eventId === cardId) {
+          return { ...card, status: 'Cancelled' };
+        }
+        return card;
+      });
+  
+      setEventData(updatedEventCards);
+    } catch (error : any) {
+      toast.error(error.message);
+    }
   };
 
   if (loading) {
@@ -93,14 +97,16 @@ export default function Schedule({userId} : {userId: Number}) {
           You have no history of events or activites.
         </p>
       ) : (
-        filteredCards.map((card: EventType, index: number) => (
-          <div id={`card-${card.id}`} key={index}>
+        filteredCards.map((card: Event) => (
+          <div id={`card-${card.eventId}`} key={card.eventId}>
             <CustomCard
-              title={card.title}
+              employeeId={userId}
+              eventId={card.eventId}
+              title={card.eventName}
               description={card.description}
-              date={card.date}
+              date={`${card.date}`}
               status={card.status}
-              onCancel={() => handleCardCancellation(card.id)}
+              onCancel={() => handleCardCancellation(card.eventId)}
               style={{ marginBottom: '16px' }}
             />
           </div>

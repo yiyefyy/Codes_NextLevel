@@ -1,11 +1,15 @@
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import CustomButton from './custom-button';
+import { createFeedback, getFeedbackByUser } from '../../pages/api/feedbackApi';
 
 interface CustomCardProps {
+  employeeId: Number,
+  eventId: number;
   title: string;
   description: string;
   date: string;
   status: string;
+  submittedFeedback: boolean;
   buttonDisabled?: boolean;
   style?: CSSProperties;
   onSignup?: () => void;
@@ -13,17 +17,18 @@ interface CustomCardProps {
 }
 
 function CustomCard({
+  employeeId,
+  eventId,
   title,
   description,
   date,
   status,
+  submittedFeedback, 
   buttonDisabled,
   style = {},
   onSignup,
   onCancel
 }: CustomCardProps) {
-  const currentDate = new Date();
-  const cardDate = new Date(date);
   const [cardStatus, setCardStatus] = useState(status);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -32,11 +37,13 @@ function CustomCard({
     rating: 0,
     comment: ''
   });
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(submittedFeedback);
 
   const statusClass =
     cardStatus === 'Registered'
       ? 'text-blue-500'
+      : cardStatus === 'Attended'
+      ? 'text-orange-500'
       : cardStatus === 'Open'
       ? 'text-green-500'
       : cardStatus === 'Cancelled'
@@ -82,14 +89,29 @@ function CustomCard({
     setShowFeedbackModal(true);
   };
 
-  const handleFeedbackSubmit = () => {
-    setFeedbackSubmitted(true);
-    setShowFeedbackModal(false);
+  const handleFeedbackSubmit = async () => {
+    try {
+      await createFeedback(employeeId, eventId, feedback.rating, feedback.comment);
+      submittedFeedback = true;
+      setFeedbackSubmitted(true);
+      setShowFeedbackModal(false);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleFeedbackCancelSubmit = () => {
     setShowFeedbackModal(false);
   };
+
+  const handleViewFeedback = async () => {
+    try {
+      const data = await getFeedbackByUser(employeeId, eventId);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4" style={style}>
@@ -99,7 +121,7 @@ function CustomCard({
       <div className="mt-2 flex justify-between items-center">
         <p className={statusClass}>{cardStatus}</p>
         <p className="text-right">
-          {cardStatus === 'Registered' && cardDate > currentDate ? (
+          {cardStatus === 'Registered' ? (
             <>
               <CustomButton
                 secondary
@@ -149,10 +171,10 @@ function CustomCard({
                 </div>
               )}
             </>
-          ) : cardStatus === 'Registered' && cardDate < currentDate ? (
+          ) : cardStatus === 'Attended' ? (
             <>
               {feedbackSubmitted ? (
-                <CustomButton>View Feedback</CustomButton>
+                <CustomButton onClick={handleViewFeedback}>View Feedback</CustomButton>
               ) : (
                 <CustomButton primary onClick={handleLeaveFeedback}>
                   Leave Feedback
