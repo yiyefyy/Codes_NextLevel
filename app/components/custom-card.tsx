@@ -49,6 +49,8 @@ function CustomCard({
       ? 'text-green-500'
       : cardStatus.toUpperCase() === 'CANCELLED'
       ? 'text-gray-500'
+      : cardStatus.toUpperCase() === 'REVIEWED'
+      ? 'text-orange-500'
       : '';
 
   const handleSignUp = () => {
@@ -92,7 +94,7 @@ function CustomCard({
 
   const handleFeedbackSubmit = async () => {
     try {
-      await createFeedback(employeeId, eventId, feedback.rating, feedback.comment);
+      await createFeedback(`${employeeId}`, `${eventId}`, feedback.rating, feedback.comment);
       setFeedbackSubmitted(true);
       setShowFeedbackModal(false);
     } catch (err) {
@@ -110,7 +112,7 @@ function CustomCard({
 
   const handleViewFeedback = async () => {
     try {
-      const data = await getFeedbackByUser(employeeId, eventId);
+      const data = await getFeedbackByUser(`${employeeId}`, `${eventId}`);
       setShowFeedback(true);
       console.log(data);
     } catch (err) {
@@ -151,7 +153,7 @@ function CustomCard({
                 </div>
               )}
             </>
-          ) : cardStatus === 'Open' ? (
+          ) : cardStatus.toUpperCase() === 'OPEN' ? (
             <>
               <CustomButton primary onClick={handleSignUp}>
                 Sign Up
@@ -176,9 +178,9 @@ function CustomCard({
                 </div>
               )}
             </>
-          ) : cardStatus === 'Attended' ? (
+          ) : cardStatus.toUpperCase() === 'ATTENDED' || cardStatus.toUpperCase() == 'REVIEWED' ? (
             <>
-              {feedbackSubmitted ? (
+              {cardStatus.toUpperCase() == 'REVIEWED' ? (
                 <CustomButton onClick={handleViewFeedback}>View Feedback</CustomButton>
               ) : (
                 <CustomButton primary onClick={handleLeaveFeedback}>

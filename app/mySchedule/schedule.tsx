@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import CustomCard from '../components/custom-card';
 import { Event } from '../../pages/api/interfaces';
-import { deregisterFromEvent, getRegisteredEvents } from '../../pages/api/registeredEventApi';
+import { checkHasRegistered, deregisterFromEvent, getRegisteredEvents } from '../../pages/api/registeredEventApi';
 import Loading from '../loading';
 import toast from 'react-hot-toast';
+import { checkHasFeedback, getFeedbackByUser } from '../../pages/api/feedbackApi';
 
 export default function Schedule({userId} : {userId: Number}) {
   const [eventData, setEventData] = useState<Event[]>([]);
@@ -21,6 +22,9 @@ export default function Schedule({userId} : {userId: Number}) {
     setLoading(true);
     try {
       const data : Event[] = await getRegisteredEvents(`${userId}`);
+      await Promise.all(data.filter(async (item) => await filter(item))); 
+      await Promise.all(data.map(async (item) => await setStatus(item)));
+
       setEventData(data);
       setLoading(false);
     } catch (error : any){
@@ -29,32 +33,39 @@ export default function Schedule({userId} : {userId: Number}) {
     }
   }
 
-  const filteredCards =
-    currentTab === 'Upcoming'
-      ? eventData.filter((card: Event) => {
-          const cardDate = new Date(card.date);
-          card.status = "Registered";
-          return cardDate > currentDate;
+  const filter = async (data : Event) => {
+    const isRegistered = await checkHasRegistered(`${userId}`, `${data.eventId}`);
+
+    return isRegistered;
+  }
+
+  const setStatus = async (data : Event) => {
+    if (new Date(data.date) > currentDate) {
+      data.status = 'Registered';
+    } else {
+      const feedbackExists = await checkHasFeedback(`${userId}`, `${data.eventId}`);
+      data.status = feedbackExists ? 'Reviewed' : 'Attended'
+    }
+  }
+
+  const filteredCards = currentTab === 'Upcoming'
+      ? eventData.filter((card: Event) => {          
+          return card.status.toUpperCase() == "REGISTERED";
         })
       : eventData.filter((card: Event) => {
-          const cardDate = new Date(card.date);
-          card.status = "Attended";
-          return cardDate < currentDate;
-        });
+        return card.status.toUpperCase() != "REGISTERED";
+      });
 
   const handleCardCancellation = async (cardId: number) => {
+    setLoading(true);
     try {
       await deregisterFromEvent(`${userId}`, `${cardId}`);
-      const updatedEventCards = eventData.map((card: Event) => {
-        if (card.eventId === cardId) {
-          return { ...card, status: 'Cancelled' };
-        }
-        return card;
-      });
-  
+      const updatedEventCards = eventData.filter((card: Event) => card.eventId != cardId );
       setEventData(updatedEventCards);
+      setLoading(false);
     } catch (error : any) {
       toast.error(error.message);
+      setLoading(false);
     }
   };
 

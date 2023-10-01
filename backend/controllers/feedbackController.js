@@ -64,7 +64,7 @@ const getFeedbackByEventId = async (req, res, next) => {
 const getUserFeedbackByEventId = async (req, res, next) => {
     try {
         const eventId = req.params.eventId
-        const { userId } = req.body;
+        const userId = req.params.userId;
         const event = await Events.findByPk(eventId);
         const user = await Users.findByPk(userId);
     

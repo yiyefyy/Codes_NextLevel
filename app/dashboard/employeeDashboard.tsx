@@ -3,18 +3,12 @@ import React, { useEffect, useState } from 'react';
 import CustomCard from '../components/custom-card';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { useEventContext } from '../data/EventProvider';
 import { fetchAllEvents } from '../../pages/api/eventApis';
 import toast from 'react-hot-toast';
 import { Event } from '../../pages/api/interfaces';
-import { deregisterFromEvent, hasRegistered, registerForEvent } from '../../pages/api/registeredEventApi';
+import { checkHasRegistered, deregisterFromEvent, registerForEvent } from '../../pages/api/registeredEventApi';
 
 export default function EmployeeDashboard({userId} : {userId: Number}) {
-  const {
-    addEventToUpcoming,
-    updateEventStatus,
-    removeEventFromUpcoming
-  } = useEventContext();
   const [eventData, setEventData] = useState<Event[]>([]);
   const [currentTab, setCurrentTab] = useState('Workshop');
   const currentDate = new Date();
@@ -37,8 +31,7 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
   }
 
   const setStatus = async (data : Event) => {
-    const isRegistered = await hasRegistered(`${userId}`, `${data.eventId}`);
-    console.log(isRegistered);
+    const isRegistered = await checkHasRegistered(`${userId}`, `${data.eventId}`);
 
     if (isRegistered) {
       data.status = 'Registered';

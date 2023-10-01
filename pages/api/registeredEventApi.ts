@@ -21,7 +21,7 @@ export async function registerForEvent(userId: string, eventId: string): Promise
     return fetchData(getEventsApi, requestOptions);
 }
 
-export async function hasRegistered(userId: string, eventId: string) : Promise<Boolean> {
+export async function checkHasRegistered(userId: string, eventId: string) : Promise<Boolean> {
   try {
     const events = await getRegisteredEvents(userId);
     return events.some((item) => `${item.eventId}` === eventId);
