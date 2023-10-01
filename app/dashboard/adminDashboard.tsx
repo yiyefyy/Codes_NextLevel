@@ -5,7 +5,8 @@ import CustomCardAdmin from '../components/custom-card-admin';
 import LineGraph from './LineGraph';
 import { Card, Metric, Text, Title, BarList, Flex, Grid, DonutChart, Legend } from '@tremor/react';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { fetchAllEvents, Event } from '../../pages/api/eventApis';
+import { fetchAllEvents } from '../../pages/api/eventApis';
+import { Event } from '../../pages/api/interfaces';
 import { getFeedbacks } from '../../pages/api/feedbackApi';
 
 export default function AdminDashboard() {
@@ -156,7 +157,7 @@ export default function AdminDashboard() {
               date={card.date.toString().split('T')[0]}
               status={card.status}
               capacity={card.capacity}
-              signUps={card.signUps}
+              signUps={card.signups}
               style={{ marginBottom: '16px' }}
             />
           </div>
