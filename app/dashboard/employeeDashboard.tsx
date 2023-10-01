@@ -1,70 +1,82 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomCard from '../components/custom-card';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { useEventContext } from '../data/EventProvider';
-
-interface EventType {
-  id: number;
-  title: string;
-  type: string;
-  description: string;
-  date: string;
-  status: string;
-  image?: string;
-}
+import { fetchAllEvents } from '../../pages/api/eventApis';
+import toast from 'react-hot-toast';
+import { Event } from '../../pages/api/interfaces';
+import { deregisterFromEvent, registerForEvent } from '../../pages/api/registeredEventApi';
 
 export default function EmployeeDashboard({userId} : {userId: Number}) {
   const {
-    eventData,
     addEventToUpcoming,
     updateEventStatus,
     removeEventFromUpcoming
   } = useEventContext();
+  const [eventData, setEventData] = useState<Event[]>([]);
   const [currentTab, setCurrentTab] = useState('Workshop');
   const currentDate = new Date();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getAllEvents();
+  }, [loading]);
+  
+  const getAllEvents = async () => {
+    try {
+      const data = await fetchAllEvents();
+      setEventData(data);
+      setLoading(false);
+    } catch (err : any) {
+      toast.error(err.message);
+      setLoading(false);
+    }
+  }
 
   const filteredCards =
     currentTab === 'Workshop'
-      ? eventData.filter((card: EventType) => {
+      ? eventData.filter((card: Event) => {
           const cardDate = new Date(card.date);
-          return card.type === 'Workshop' && cardDate > currentDate;
+          card.status = card.status == 'Registered' ? 'Registered' : 'Open';
+          return card.eventType.toUpperCase() === 'WORKSHOP' && cardDate > currentDate;
         })
-      : eventData.filter((card: EventType) => {
+      : eventData.filter((card: Event) => {
           const cardDate = new Date(card.date);
-          return card.type === 'Activity' && cardDate > currentDate;
+          return card.eventType.toUpperCase() === 'ACTIVITY' && cardDate > currentDate;
         });
 
   const carouselImages = [
     ...eventData
-      .filter((item: EventType) => [97, 101, 103].includes(item.id))
-      .map((item: EventType) => ({ image: item.image, title: item.title }))
+      .filter((item: Event) => item.image != null)
+      .map((item: Event) => ({ image: item.image, title: item.eventName }))
   ];
 
-  const handleSignUpForEvent = (eventId: number) => {
-    const eventToSignUpFor = eventData.find(
-      (event: EventType) => event.id === eventId
-    );
+  const handleSignUpForEvent = async (eventId : number) => {
+    try {
+      const event = await registerForEvent(`${userId}`, `${eventId}`);
 
-    if (eventToSignUpFor) {
+      //TODO: udpate this
       updateEventStatus(eventId, 'Registered');
-
-      addEventToUpcoming(eventToSignUpFor);
+      addEventToUpcoming(eventId);
+    } catch (error : any) {
+      toast.error(error.message);
     }
-  };
+  }
 
-  const handleCancelForEvent = (eventId: number) => {
-    const eventToCancel = eventData.find(
-      (event: EventType) => event.id === eventId
-    );
-
-    if (eventToCancel) {
+  const handleCancelForEvent = async (eventId: number) => {
+    try {
+      await deregisterFromEvent(`${userId}`, `${eventId}`);
+      // TODO: udpate this
       updateEventStatus(eventId, 'Open');
+      removeEventFromUpcoming(eventId);
 
-      removeEventFromUpcoming(eventToCancel);
+    } catch (error : any) {
+      toast.error(error.message);
     }
   };
+
 
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -117,18 +129,18 @@ export default function EmployeeDashboard({userId} : {userId: Number}) {
         </button>
       </div>
 
-      {filteredCards.map((card: EventType, index: number) => (
-        <div id={`card-${card.id}`} key={index}>
+      {filteredCards.map((card: Event, index: number) => (
+        <div id={`card-${card.eventId}`} key={index}>
           <CustomCard
             employeeId={userId}
-            eventId = {card.id}
-            title={card.title}
+            eventId = {card.eventId}
+            title={card.eventName}
             description={card.description}
-            date={card.date}
+            date={`${card.date}`}
             status={card.status}
             style={{ marginBottom: '16px' }}
-            onSignup={() => handleSignUpForEvent(card.id)}
-            onCancel={() => handleCancelForEvent(card.id)}
+            onSignup={() => handleSignUpForEvent(card.eventId)}
+            onCancel={() => handleCancelForEvent(card.eventId)}
           />
         </div>
       ))}

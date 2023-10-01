@@ -1,17 +1,7 @@
 import { fetchData } from "./utils";
-const EVENTS_API = 'http://localhost:8000/events';
+import { Event } from "./interfaces";
 
-export interface Event {
-  eventId: number,
-  eventName: string,
-  eventType: string,
-  description: string,
-  date: Date,
-  capacity: number,
-  signUps: number,
-  status: string,
-  image: string
-}
+const EVENTS_API = 'http://localhost:8000/events';
 
 export interface Signup {
   userId: number,
