@@ -27,7 +27,7 @@ export default async function ManageEmployees({
   : users
 
   const handleCreateUserClick = () => {
-      router.push("/AddEmployee")
+      router.push("/addEmployee")
   }
 
 
